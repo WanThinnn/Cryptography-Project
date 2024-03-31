@@ -17,19 +17,19 @@ def message_to_bin(message):
     return binary_message
 
 
-def generate_keys(num_columns):
+def generate_keys():
+    num_columns = 7
     keys = {}
     for i in range(num_columns):
-        key = get_random_bytes(16)  # Tạo một key ngẫu nhiên có độ dài 16 bytes (128 bits)
-        # key_bytes_128 = key.encode('utf-8')
-        keys[f'key_{i+1}'] = key
+        key = get_random_bytes(16) 
+        keys[i] = key
     return keys
 
 def save_keys_to_file(keys, file_path):
     with open(file_path, 'w') as file:
         for key_name, key in keys.items():
             key_hex = key.hex()
-            file.write(f"{key_name}: {key_hex}\n")
+            file.write(f"{key_hex}\n")
 
 def read_keys_from_file(file_path):
     keys = []
@@ -41,25 +41,22 @@ def read_keys_from_file(file_path):
             keys.append(key_value)
     return keys
 
-def encrypt(plaintext, key128):
-    keys_list = read_keys_from_file('keys.txt')
+def encrypt(plaintext, key256):
+    keys_list = read_keys_from_file('./keys.txt')
     # key128 = "12345678abcdefgh"
-    key_bytes_128 = key128.encode('utf-8')
-    aes_mode = modes.modes(key_bytes_128)
+    key_bytes_256 = key256.encode('utf-8')
+    aes_mode = modes.modes(key_bytes_256)
     cipher = aes_mode.cbc_encrypt(plaintext)
     return cipher.hex()
 
-    
 
-
-def dencrypt(ciphertext_hex, key128):
-    key_bytes_128 = key128.encode('utf-8')  # Chuyển đổi key sang dạng bytes
-    aes_mode = modes.modes(key_bytes_128)
+def dencrypt(ciphertext_hex, key256):
+    key_bytes_256 = key256.encode('utf-8')  # Chuyển đổi key sang dạng bytes
+    aes_mode = modes.modes(key_bytes_256)
     decrypt_function = aes_mode.cbc_decrypt
     ciphertext_bytes = bytes.fromhex(ciphertext_hex)  # Chuyển đổi ciphertext từ dạng hex sang dạng bytes
     return decrypt_function(ciphertext_bytes)
     
-
 
 def Ma_hoa():
     # Số lượng cột trong file CSV
@@ -84,7 +81,7 @@ def Ma_hoa():
         for row in reader:
             for i in range(len(cols)):
                 row[cols[i]] = encrypt(row[cols[i]], keys_list[i])
-                # Ghi hàng đã mã hóa vào tệp CSV mới
+            # Ghi hàng đã mã hóa vào tệp CSV mới
             writer.writerow(row)
         print("Encryption completed.")
     
@@ -98,6 +95,7 @@ def Giai_ma():
     print("5. price")
     print("6. public_date")
     print("7. manager_id")
+    print("8. all_data")
     choice = input("Enter choice (1/2/3/4/5/6/7): ")
     mode_map = {
         "1": "id",
@@ -106,7 +104,8 @@ def Giai_ma():
         "4": "import_date",
         "5": "price",
         "6": "public_date",
-        "7": "manager_id"
+        "7": "manager_id",
+        "8": "all_data"
         
     }
     chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
@@ -124,27 +123,58 @@ def Giai_ma():
     # Đường dẫn đến file CSV đã mã hóa
     encrypted_csv_path = "encrypted_data.csv"
 
+    cols = ["id", "name", "type" ,"import_date" ,"price","public_date","manager_id"]
+
     # Đọc dữ liệu từ file CSV đã mã hóa
     decrypted_data = []
+    
     try:
-        with open(encrypted_csv_path, 'r', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                ciphertext_hex = row[choose]
-                plaintext = dencrypt(ciphertext_hex, keys_list[i])
-                row[choose] = plaintext
-                decrypted_data.append(row)
+        if (i == 7):
+            with open(encrypted_csv_path, 'r', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    decrypted_row = {}  # Tạo một hàng mới để lưu trữ các giá trị giải mã
+                    for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
+                        ciphertext_hex = row[col]
+                        plaintext = dencrypt(ciphertext_hex, keys_list[j])
+                        decrypted_row[col] = plaintext  # Thêm giá trị giải mã vào hàng mới
+                    decrypted_data.append(decrypted_row)  # Thêm hàng đã giải mã vào danh sách
+                # Đường dẫn đến file CSV đã giải mã
+            
+            decrypted_csv_path = f"dencrypted_{choose}.csv"
 
-        # Đường dẫn đến file CSV đã giải mã
-        decrypted_csv_path = f"dencrypted_{choose}.csv"
+            # Viết dữ liệu đã giải mã vào file CSV mới
+            with open(decrypted_csv_path, 'w', newline='') as csvfile:
+                fieldnames = decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(decrypted_data)
+            print(f"Decrypted data for column '{choose}' saved to '{decrypted_csv_path}'.")
+            
+       
+       
+       
+        else:
+            with open(encrypted_csv_path, 'r', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    ciphertext_hex = row[choose]
+                    plaintext = dencrypt(ciphertext_hex, keys_list[i])
+                    row[choose] = plaintext
+                    decrypted_data.append(row)
 
-        # Viết dữ liệu đã giải mã vào file CSV mới
-        with open(decrypted_csv_path, 'w', newline='') as csvfile:
-            fieldnames = decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(decrypted_data)
-        print(f"Decrypted data for column '{choose}' saved to '{decrypted_csv_path}'.")
+            # Đường dẫn đến file CSV đã giải mã
+            decrypted_csv_path = f"dencrypted_{choose}.csv"
+
+            # Viết dữ liệu đã giải mã vào file CSV mới
+            with open(decrypted_csv_path, 'w', newline='') as csvfile:
+                fieldnames = decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(decrypted_data)
+            print(f"Decrypted data for column '{choose}' saved to '{decrypted_csv_path}'.")
+            
+            
     except ValueError:
         print ("Decryption failed: Incorrect key!" ) # Thông báo khi khoá không chính xác
 
@@ -156,16 +186,27 @@ def Giai_ma():
 
 
 switch_case = {
-    1: Ma_hoa,  # Đây chỉ là tên hàm, không gọi ngay lập tức
-    2: Giai_ma  # Đây cũng chỉ là tên hàm, không gọi ngay lập tức
+    1: generate_keys,
+    2: Ma_hoa,  # Đây chỉ là tên hàm, không gọi ngay lập tức
+    3: Giai_ma  # Đây cũng chỉ là tên hàm, không gọi ngay lập tức
 }
 
 # Lựa chọn chế độ
-mode = int(input("Chọn chế độ:\n1. Mã hóa\n2. Giải mã\nChọn: "))
+print("Chọn chế độ:")
+print("1. Tạo key:")
+print("2. Mã hoá:")
+print("3. Giải mã:")
+mode = int(input("Chọn: "))
+
+
 
 # Kiểm tra xem lựa chọn có hợp lệ không và gọi hàm tương ứng
-if mode in switch_case:
-    switch_case[mode]()  # Gọi hàm tương ứng với lựa chọn
+if mode == 1:
+    keys = generate_keys()
+    save_keys_to_file(keys, "keys.txt")
+elif mode == 2:
+    Ma_hoa()
+elif mode == 3:
+    Giai_ma()
 else:
     print("Lựa chọn không hợp lệ.")
-
