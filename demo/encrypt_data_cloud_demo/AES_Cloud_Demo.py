@@ -17,8 +17,8 @@ def message_to_bin(message):
     return binary_message
 
 
-def generate_keys():
-    num_columns = 7
+def generate_keys(cols):
+    num_columns = len(cols)
     keys = {}
     for i in range(num_columns):
         key = get_random_bytes(16) 
@@ -27,8 +27,8 @@ def generate_keys():
 
 def save_keys_to_file(keys, file_path):
     with open(file_path, 'w') as file:
-        for key_name, key in keys.items():
-            key_hex = key.hex()
+        for key in keys.values():  # Lặp qua các giá trị của từ điển keys
+            key_hex = key.hex()  # Chuyển đổi key thành dạng hex
             file.write(f"{key_hex}\n")
 
 def read_keys_from_file(file_path):
@@ -42,13 +42,12 @@ def read_keys_from_file(file_path):
     return keys
 
 def encrypt(plaintext, key256):
-    keys_list = read_keys_from_file('./keys.txt')
+    # keys_list = read_keys_from_file('./keys.txt')
     # key128 = "12345678abcdefgh"
     key_bytes_256 = key256.encode('utf-8')
     aes_mode = modes.modes(key_bytes_256)
     cipher = aes_mode.cbc_encrypt(plaintext)
     return cipher.hex()
-
 
 def dencrypt(ciphertext_hex, key256):
     key_bytes_256 = key256.encode('utf-8')  # Chuyển đổi key sang dạng bytes
@@ -57,18 +56,17 @@ def dencrypt(ciphertext_hex, key256):
     ciphertext_bytes = bytes.fromhex(ciphertext_hex)  # Chuyển đổi ciphertext từ dạng hex sang dạng bytes
     return decrypt_function(ciphertext_bytes)
     
-
-def Ma_hoa():
+def Ma_hoa(cols, key_list, plaintext_csv_path, encrypted_csv_path):
     # Số lượng cột trong file CSV
     # num_columns = 7
     # Tạo keys cho mỗi cột
     # keys = generate_keys(num_columns)
     # Lưu keys vào file .txt
     # save_keys_to_file(keys, 'keys.txt')
-    cols = ["id", "name", "type" ,"import_date" ,"price","public_date","manager_id"]
-    keys_list = read_keys_from_file('keys.txt')
-    plaintext_csv_path = "plaintext.csv"
-    encrypted_csv_path = "encrypted_data.csv"
+    # cols = ["id", "name", "type" ,"import_date" ,"price","public_date","manager_id"]
+    # keys_list = read_keys_from_file('keys.txt')
+    # plaintext_csv_path = "plaintext.csv"
+    # encrypted_csv_path = "encrypted_data.csv"
     
     with open(plaintext_csv_path, 'r', newline='') as input_file,\
             open(encrypted_csv_path, 'w', newline='') as output_file:
@@ -85,31 +83,10 @@ def Ma_hoa():
             writer.writerow(row)
         print("Encryption completed.")
     
-
-def Giai_ma():
-    print('Moi nhap cot can giai ma: ')
-    print("1. id")
-    print("2. name")
-    print("3. type")
-    print("4. import_date")
-    print("5. price")
-    print("6. public_date")
-    print("7. manager_id")
-    print("8. all_data")
-    choice = input("Enter choice (1/2/3/4/5/6/7): ")
-    mode_map = {
-        "1": "id",
-        "2": "name",
-        "3": "type",
-        "4": "import_date",
-        "5": "price",
-        "6": "public_date",
-        "7": "manager_id",
-        "8": "all_data"
-        
-    }
+def Giai_ma(choice, mode_map, cols, keys_list, encrypted_csv_path):
     chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
     choose = mode_map.get(choice)
+    
     if chosen_column not in mode_map.values():
         print("Lựa chọn không hợp lệ.")
         return
@@ -117,15 +94,6 @@ def Giai_ma():
         i = int(choice) - 1  # Định nghĩa giá trị của biến i dựa trên lựa chọn của người dùng
         print("Bạn đã chọn cột:", chosen_column)
 
-
-    keys_list = read_keys_from_file('keys.txt')
-    
-    # Đường dẫn đến file CSV đã mã hóa
-    encrypted_csv_path = "encrypted_data.csv"
-
-    cols = ["id", "name", "type" ,"import_date" ,"price","public_date","manager_id"]
-
-    # Đọc dữ liệu từ file CSV đã mã hóa
     decrypted_data = []
     
     try:
@@ -178,10 +146,52 @@ def Giai_ma():
     except ValueError:
         print ("Decryption failed: Incorrect key!" ) # Thông báo khi khoá không chính xác
 
+def get_cols(csv_file_path):
+    cols = []
+    # Đọc dòng đầu tiên của file CSV và lưu vào mảng cols
+    with open(csv_file_path, 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        cols = next(reader)  # Đọc dòng đầu tiên và lưu vào mảng cols
+    return cols
+
+def get_tables(file_path):
+    result = []  # Khởi tạo một list để lưu trữ các hàng từ file CSV
+    with open(file_path, 'r') as file:
+        # Đọc từng dòng của file văn bản
+        for line in file:
+            # Xử lý dòng là một bảng CSV
+                result.append(line.strip())  # Thêm dòng sau khi loại bỏ dấu xuống dòng vào mảng
+    return result
+
+def print_cols(cols):
+    print('Mời nhập cột cần xử lý: ')
+    # In ra tên các cột
+    for i, col in enumerate(cols, start=1):
+        print(f"{i}. {col}")
+
+def print_tables(tables):
+    print('Mời nhập bảng cần xử lý: ')
+    for i, table in enumerate(tables, start=1):
+        print(f"{i}. {table}")
+    
+def create_mode_map(cols):
+    mode_map = {}
+    for i, col in enumerate(cols, start=1):
+        mode_map[str(i)] = col
+    mode_map[str(len(cols) + 1)] = "all_data"
+    return mode_map
 
 
 
 
+def select_csv_file(database):
+    tables = get_tables(database)
+    print_tables(tables)
+    choice = int(input("Chọn: "))
+    if (choice > len(tables)) or (choice < 1):
+        print("Lỗi, nhập lại!")
+        sys.exit()  # Kết thúc chương trình nếu có lỗi
+    return tables[choice-1]
 
 
 
@@ -191,22 +201,38 @@ switch_case = {
     3: Giai_ma  # Đây cũng chỉ là tên hàm, không gọi ngay lập tức
 }
 
+
+
+tables = select_csv_file("database.txt")
+tables_path = f"{tables}.csv"
+
 # Lựa chọn chế độ
 print("Chọn chế độ:")
 print("1. Tạo key:")
 print("2. Mã hoá:")
 print("3. Giải mã:")
 mode = int(input("Chọn: "))
-
+print()
 
 
 # Kiểm tra xem lựa chọn có hợp lệ không và gọi hàm tương ứng
 if mode == 1:
-    keys = generate_keys()
-    save_keys_to_file(keys, "keys.txt")
+    cols = get_cols(tables_path)
+    keys = generate_keys(cols)
+    save_keys_to_file(keys, f"keys_{tables}.txt")
 elif mode == 2:
-    Ma_hoa()
+    cols = get_cols(tables_path)
+    keys_list = read_keys_from_file(f"keys_{tables}.txt")
+    encrypted_csv_path = f"encrypted_{tables}.csv"
+    Ma_hoa(cols, keys_list, tables_path, encrypted_csv_path)
+    
 elif mode == 3:
-    Giai_ma()
+    keys_list = read_keys_from_file(f"keys_{tables}.txt")
+    encrypted_csv_path = f"encrypted_{tables}.csv"
+    cols = get_cols(tables_path)
+    mode_map = create_mode_map(cols)
+    print_cols(cols)
+    choice = input("Enter choice (1/2/3/4/5/6/7): ")
+    Giai_ma(choice, mode_map, cols, keys_list, encrypted_csv_path)
 else:
     print("Lựa chọn không hợp lệ.")
