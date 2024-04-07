@@ -45,48 +45,48 @@ class Admin:
         self.decrypted_data = []
         
         try:
-            if (i == 7):
+            if (i == len(cols)):
                 with open(encrypted_csv_path, 'r', newline='') as csvfile:
                     reader = csv.DictReader(csvfile)
                     for row in reader:
                         self.decrypted_row = {}  # Tạo một hàng mới để lưu trữ các giá trị giải mã
                         for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
-                            # ciphertext_hex = base64_to_hex(row[col])
-                            plaintext = base.dencrypt(ciphertext_hex, keys_list[j])
-                            decrypted_row[col] = plaintext  # Thêm giá trị giải mã vào hàng mới
+                            self.ciphertext_hex = row[col]
+                            self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
+                            self.decrypted_row[col] = self.plaintext  # Thêm giá trị giải mã vào hàng mới
 
-                        self.decrypted_data.append(decrypted_row)  # Thêm hàng đã giải mã vào danh sách
+                        self.decrypted_data.append(self.decrypted_row)  # Thêm hàng đã giải mã vào danh sách
                     # Đường dẫn đến file CSV đã giải mã
                 
-                decrypted_csv_path = f"dencrypted_{tables}_{choose}.csv"
+                self.decrypted_csv_path = f"dencrypted_{tables}_{self.choose}.csv"
 
                 # Viết dữ liệu đã giải mã vào file CSV mới
-                with open(decrypted_csv_path, 'w', newline='') as csvfile:
+                with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
                     self.fieldnames = self.decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
-                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
                     writer.writeheader()
                     writer.writerows(self.decrypted_data)
-                print(f"Giải mã thành công! Dữ liệu giải mã '{self.choose}' được lưu tại '{decrypted_csv_path}'.")
+                print(f"Giải mã thành công! Dữ liệu giải mã '{self.choose}' được lưu tại '{self.decrypted_csv_path}'.")
                 
             else:
                 with open(encrypted_csv_path, 'r', newline='') as csvfile:
                     reader = csv.DictReader(csvfile)
                     for row in reader:
-                        ciphertext_hex = row[self.choose]
-                        plaintext = base.dencrypt(ciphertext_hex, keys_list[i])
-                        row[self.choose] = plaintext
+                        self.ciphertext_hex = row[self.choose]
+                        self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[i])
+                        row[self.choose] = self.plaintext
                         self.decrypted_data.append(row)
 
                 # Đường dẫn đến file CSV đã giải mã
-                decrypted_csv_path = f"dencrypted_{tables}_{self.choose}.csv"
+                self.decrypted_csv_path = f"dencrypted_{tables}_{self.choose}.csv"
 
                 # Viết dữ liệu đã giải mã vào file CSV mới
-                with open(decrypted_csv_path, 'w', newline='') as csvfile:
-                    fieldnames = self.decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
-                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
+                    self.fieldnames = self.decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
+                    writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
                     writer.writeheader()
                     writer.writerows(self.decrypted_data)
-                print(f"Giải mã thành công! Dữ liệu giải mã '{self.choose}' được lưu tại '{decrypted_csv_path}'.")
+                print(f"Giải mã thành công! Dữ liệu giải mã '{self.choose}' được lưu tại '{self.decrypted_csv_path}'.")
                 
                 
         except ValueError:

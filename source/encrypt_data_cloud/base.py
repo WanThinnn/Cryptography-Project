@@ -49,8 +49,10 @@ def get_tables(file_path):
 def print_cols(cols):
     print('Mời nhập cột cần xử lý: ')
     # In ra tên các cột
+    i = 1
     for i, col in enumerate(cols, start=1):
         print(f"{i}. {col}")
+    print(f"{i+1}. all_data")
 
 def print_tables(tables):
     print('Mời nhập bảng cần xử lý: ')

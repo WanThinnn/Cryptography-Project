@@ -69,8 +69,10 @@ def get_tables(file_path):
 def print_cols(cols):
     print('Mời nhập cột cần xử lý: ')
     # In ra tên các cột
+    i = 1
     for i, col in enumerate(cols, start=1):
         print(f"{i}. {col}")
+    print(f"{i+1}. all_data")
 
 def print_tables(tables):
     print('Mời nhập bảng cần xử lý: ')
@@ -140,13 +142,13 @@ def Giai_ma(choice, mode_map, cols, tables, keys_list, encrypted_csv_path):
     decrypted_data = []
     
     try:
-        if (i == 7):
+        if (i == len(cols)):
             with open(encrypted_csv_path, 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     decrypted_row = {}  # Tạo một hàng mới để lưu trữ các giá trị giải mã
                     for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
-                        # ciphertext_hex = base64_to_hex(row[col])
+                        ciphertext_hex = row[col]
                         plaintext = dencrypt(ciphertext_hex, keys_list[j])
                         decrypted_row[col] = plaintext  # Thêm giá trị giải mã vào hàng mới
 
