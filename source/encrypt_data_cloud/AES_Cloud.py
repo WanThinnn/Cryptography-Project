@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 #Ref: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 # Mode: https://csrc.nist.gov/pubs/sp/800/38/a/sup/final
-import sys, os
+import sys, os, time, csv, base64, binascii
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
-import csv
-import base64
-import binascii
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
@@ -111,7 +108,7 @@ def dencrypt(ciphertext, key256):
     ciphertext_bytes = bytes.fromhex(ciphertext_hex)
     return decrypt_function(ciphertext_bytes)
     
-def Ma_hoa(cols, key_list, plaintext_csv_path, encrypted_csv_path):
+def Ma_hoa(cols, keys_list, plaintext_csv_path, encrypted_csv_path):
 
     with open(plaintext_csv_path, 'r', newline='') as input_file,\
             open(encrypted_csv_path, 'w', newline='') as output_file:
@@ -218,7 +215,11 @@ elif mode == 2:
     cols = get_cols(tables_path)
     keys_list = read_keys_from_file(f"keys_{tables}.txt")
     encrypted_csv_path = f"encrypted_{tables}.csv"
+    start_time = time.time()
     Ma_hoa(cols, keys_list, tables_path, encrypted_csv_path)
+    end_time = time.time()
+    execution_time = round(end_time - start_time,2)
+    print(f"Thời gian thực thi: {execution_time} giây")
     
 elif mode == 3:
     keys_list = read_keys_from_file(f"keys_{tables}.txt")
@@ -227,6 +228,10 @@ elif mode == 3:
     mode_map = create_mode_map(cols)
     print_cols(cols)
     choice = input("Enter choice: ")
+    start_time = time.time()
     Giai_ma(choice, mode_map, cols, tables, keys_list, encrypted_csv_path)
+    end_time = time.time()
+    execution_time = round(end_time - start_time,2)
+    print(f"Thời gian thực thi: {execution_time} giây")
 else:
     print("Lựa chọn không hợp lệ.")
