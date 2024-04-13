@@ -44,11 +44,15 @@ elif mode == 3:
     cols = base.get_cols(tables_path)
     mode_map = base.create_mode_map(cols)
     base.print_cols(cols)
-    choice = input("Enter choice: ")
+    # Nhập vào một chuỗi chứa các lựa chọn, mỗi lựa chọn được phân cách bằng dấu phẩy
+    choice_str = input("Chọn (cách nhau 1 dấu phẩy nếu chọn nhiều hơn 1): ")
+    # Tách chuỗi thành các phần tử của mảng sử dụng dấu phẩy làm dấu phân cách
+    choices = choice_str.split(',')
     start_time = time.time()
-    admin_1.decrypt_data(choice, mode_map, cols, tables, keys_list, encrypted_csv_path)
+    admin_1.decrypt_data(choices, mode_map, cols, tables, keys_list, encrypted_csv_path)
     end_time = time.time()
     execution_time = round(end_time - start_time,2)
     print(f"Thời gian thực thi: {execution_time} giây")
+
 else:
     print("Lựa chọn không hợp lệ.")
