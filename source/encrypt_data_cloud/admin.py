@@ -31,77 +31,7 @@ class Admin:
                 writer.writerow(row)
             print("Mã hoá toàn bộ dữ liệu thành công!")
             
-    # def save_decrypted_data_to_csv(self, i):
-    #     # Viết dữ liệu đã giải mã vào file CSV mới
-    #     with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
-    #         self.fieldnames = self.decrypted_data[i].keys()
-    #         writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-    #         writer.writeheader()
-    #         for decrypted_data in self.all_decrypted_data:
-    #             writer.writerows(decrypted_data)
-        
-    # def decrypt_data(self, choices, mode_map, cols, tables, keys_list, encrypted_csv_path):
-    #     self.name_file = input('Đặt tên file: ')
-    #     self.decrypted_csv_path = f"dencrypted_{tables}_{self.name_file}.csv"
-        
-    #     # Khởi tạo danh sách chứa tất cả dữ liệu đã giải mã
-    #     self.all_decrypted_data = [[] for _ in range(len(choices))]
 
-    #     for choice in choices:
-    #         self.chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
-            
-    #         if self.chosen_column not in mode_map.values():
-    #             print("Lựa chọn không hợp lệ.")
-    #             return
-    #         else:
-    #             print("Bạn đã chọn giải mã:", self.chosen_column)
-
-    #         # Khởi tạo danh sách dữ liệu đã giải mã cho mỗi lựa chọn
-    #         self.decrypted_data = []
-
-    #         try:
-    #             if self.chosen_column == "all_data":
-    #                 # Giải mã tất cả các cột nếu lựa chọn là "all_data"
-    #                 with open(encrypted_csv_path, 'r', newline='') as csvfile:
-    #                     reader = csv.DictReader(csvfile)
-    #                     for row in reader:
-    #                         self.decrypted_row = {}  # Tạo một hàng mới để lưu trữ các giá trị giải mã
-    #                         for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
-    #                             self.ciphertext_hex = row[col]
-    #                             self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
-    #                             self.decrypted_row[col] = self.plaintext  # Thêm giá trị giải mã vào hàng mới
-
-    #                         self.decrypted_data.append(self.decrypted_row)  # Thêm hàng đã giải mã vào danh sách
-
-    #             else:
-    #                 # Giải mã chỉ một cột nếu lựa chọn là tên cột cụ thể
-    #                 i = cols.index(self.chosen_column)
-    #                 with open(encrypted_csv_path, 'r', newline='') as csvfile:
-    #                     reader = csv.DictReader(csvfile)
-    #                     for row in reader:
-    #                         self.decrypted_row = {}  # Tạo một hàng mới để lưu trữ các giá trị giải mã
-    #                         for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
-    #                             self.ciphertext_hex = row[self.chosen_column]
-    #                             if (i == j):
-    #                                 self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
-    #                                 self.decrypted_row[self.chosen_column] = self.plaintext  # Thêm giá trị giải mã vào hàng mới
-    #                                 self.decrypted_data.append(self.decrypted_row)  # Thêm hàng đã giải mã vào danh sách
-    #                 # Thêm hàng đã giải mã vào danh sách 2 chiều tương ứng với cột được chọn
-    #                 self.all_decrypted_data[index].append(self.decrypted_row)
-    #         except ValueError:
-    #             print("Giải mã thất bại! Sai khoá hoặc lỗi!")  # Thông báo khi khoá không chính xác
-    #             return
-            
-    #         self.save_decrypted_data_to_csv(cols.index(self.chosen_column))
-    #         # Viết dữ liệu đã giải mã vào file CSV mới
-    #         # with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
-    #         #     self.fieldnames = self.decrypted_data[0].keys()  # Sử dụng keys của bất kỳ hàng nào để lấy tên cột
-    #         #     writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-    #         #     writer.writeheader()
-    #         #     writer.writerows(self.decrypted_data)
-
-
-    #     print(f"Giải mã thành công! Dữ liệu giải mã được lưu tại '{self.decrypted_csv_path}'.")
     
     def decrypt_data(self, choices, mode_map, cols, tables, keys_list, encrypted_csv_path):
         self.name_file = input('Đặt tên file: ')
