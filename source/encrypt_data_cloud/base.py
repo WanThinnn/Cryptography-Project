@@ -69,8 +69,13 @@ def create_mode_map(cols):
 def select_csv_file(database):
     tables = get_tables(database)
     print_tables(tables)
+    print(f"{len(tables)+1}. Thoát")  # Thêm tuỳ chọn "Thoát"
+    
     choice = int(input("Chọn: "))
-    if (choice > len(tables)) or (choice < 1):
+    print()
+    if choice == len(tables)+1:
+        sys.exit()  # Thoát chương trình nếu người dùng chọn "Thoát"
+    elif (choice > len(tables)+1) or (choice < 1):
         print("Lỗi, nhập lại!")
         sys.exit()  # Kết thúc chương trình nếu có lỗi
     return tables[choice-1]
@@ -104,3 +109,25 @@ def dencrypt(ciphertext, key256):
     ciphertext_hex = base64_to_hex(ciphertext)
     ciphertext_bytes = bytes.fromhex(ciphertext_hex)
     return decrypt_function(ciphertext_bytes)
+
+def login():
+    username = input("Username: ")
+    password = input("Password: ")
+
+    # Kiểm tra thông tin đăng nhập
+    if username == "admin" and password == "admin123":
+        print("Đăng nhập thành công!\n")
+        return "admin"
+    elif username == "user" and password == "user123":
+        print("Đăng nhập thành công!\n")
+        return "user"
+    else:
+        print("Sai tên người dùng hoặc mật khẩu.")
+        return None
+    
+    
+
+def process_database():
+    tables = select_csv_file("database.txt")
+    tables_path = f"{tables}.csv"
+    return tables, tables_path
