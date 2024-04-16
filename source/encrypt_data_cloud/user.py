@@ -66,6 +66,9 @@ class User:
         self.save_decrypted_data_to_csv()
 
         print(f"Giải mã thành công! Dữ liệu giải mã được lưu tại '{self.decrypted_csv_path}'!\n")
+        
+        
+        
     def process(self, tables, tables_path):
         while True:
             # Lựa chọn chế độ
@@ -77,6 +80,7 @@ class User:
             print()
             # Kiểm tra xem lựa chọn có hợp lệ không và gọi hàm tương ứng
             if mode == 1:
+                # Chưa xử lý phân quyền cho user
                 print(f"Nhận key thành công, lưu tại keys_{tables}.txt!\n")
             elif mode == 2:
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")
@@ -94,7 +98,7 @@ class User:
                 execution_time = round(end_time - start_time,2)
                 print(f"Thời gian thực thi: {execution_time} giây\n")
             elif mode == 3:
-                print(f"Kết thúc phiên làm việc của User với bảng {tables}\n")
+                print(f"Kết thúc phiên làm việc của User với bảng {tables}!\n")
                 break
             else:
                 print("Lựa chọn không hợp lệ.\n")

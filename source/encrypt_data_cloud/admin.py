@@ -5,6 +5,16 @@ sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
 class Admin:
+    def save_decrypted_data_to_csv(self):
+        # Viết dữ liệu đã giải mã vào file CSV mới
+        with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=self.decrypted_data.keys())
+            writer.writeheader()
+
+            # Sử dụng zip để kết hợp dữ liệu từ các cột thành các hàng
+            for row in zip(*self.decrypted_data.values()):
+                writer.writerow(dict(zip(self.decrypted_data.keys(), row)))
+
     def generate_keys(self, cols):
         self.num_columns = len(cols)
         self.keys = {}
@@ -32,14 +42,13 @@ class Admin:
             print("Mã hoá toàn bộ dữ liệu thành công!\n")
             
 
-    
     def decrypt_data(self, choices, mode_map, cols, tables, keys_list, encrypted_csv_path):
         self.name_file = input('Đặt tên file: ')
         self.decrypted_csv_path = f"dencrypted_{tables}_{self.name_file}.csv"
 
         # Khởi tạo từ điển để lưu trữ dữ liệu giải mã
         self.decrypted_data = {}
-        for index, choice in enumerate(choices):
+        for choice in enumerate(choices):
             self.chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
 
             if self.chosen_column not in mode_map.values():
@@ -52,11 +61,11 @@ class Admin:
                 reader = csv.DictReader(csvfile)
 
                 for row in reader:
-                    for index, choice in enumerate(choices):
+                    for choice in enumerate(choices):
                         self.chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
 
                         # Giải mã dữ liệu cho cột được chọn
-                        if self.chosen_column == "all_data"  and len(choices) == 1:
+                        if self.chosen_column == "all_data" and len(choices) == 1:
                             for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
                                 self.ciphertext_hex = row[col]
                                 self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
@@ -82,17 +91,9 @@ class Admin:
 
         print(f"Giải mã thành công! Dữ liệu giải mã được lưu tại '{self.decrypted_csv_path}'!\n")
 
-    def save_decrypted_data_to_csv(self):
-        # Viết dữ liệu đã giải mã vào file CSV mới
-        with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=self.decrypted_data.keys())
-            writer.writeheader()
 
-            # Sử dụng zip để kết hợp dữ liệu từ các cột thành các hàng
-            for row in zip(*self.decrypted_data.values()):
-                writer.writerow(dict(zip(self.decrypted_data.keys(), row)))
     def process(self, tables, tables_path):
-         while True:
+        while True:
             # Lựa chọn chế độ
             print("Chọn chế độ:")
             print("1. Tạo key:")
@@ -107,6 +108,7 @@ class Admin:
                 cols = base.get_cols(tables_path)
                 keys = self.generate_keys(cols)
                 base.save_keys_to_file(keys, f"keys_{tables}.txt")
+
             elif mode == 2:
                 cols = base.get_cols(tables_path)
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")

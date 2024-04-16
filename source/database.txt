@@ -1,4 +1,4 @@
 staffs
 products
 partners
-BankCustomer
+bank_customer
