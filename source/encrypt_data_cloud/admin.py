@@ -48,11 +48,11 @@ class Admin:
 
         # Khởi tạo từ điển để lưu trữ dữ liệu giải mã
         self.decrypted_data = {}
-        for choice in enumerate(choices):
+        for index, choice in enumerate(choices):
             self.chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
 
             if self.chosen_column not in mode_map.values():
-                print("Lựa chọn không hợp lệ.")
+                print("Lựa chọn không hợp lệ.\n")
                 return
             else:
                 print("Bạn đã chọn giải mã:", self.chosen_column)
@@ -61,11 +61,11 @@ class Admin:
                 reader = csv.DictReader(csvfile)
 
                 for row in reader:
-                    for choice in enumerate(choices):
+                    for index, choice in enumerate(choices):
                         self.chosen_column = mode_map.get(choice)  # Lấy giá trị tương ứng với lựa chọn của người dùng
 
                         # Giải mã dữ liệu cho cột được chọn
-                        if self.chosen_column == "all_data" and len(choices) == 1:
+                        if self.chosen_column == "all_data"  and len(choices) == 1:
                             for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
                                 self.ciphertext_hex = row[col]
                                 self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
@@ -108,7 +108,6 @@ class Admin:
                 cols = base.get_cols(tables_path)
                 keys = self.generate_keys(cols)
                 base.save_keys_to_file(keys, f"keys_{tables}.txt")
-
             elif mode == 2:
                 cols = base.get_cols(tables_path)
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")
@@ -118,7 +117,6 @@ class Admin:
                 end_time = time.time()
                 execution_time = round(end_time - start_time,2)
                 print(f"Thời gian thực thi: {execution_time} giây\n")
-                
             elif mode == 3:
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")
                 encrypted_csv_path = f"encrypted_{tables}.csv"
@@ -138,5 +136,5 @@ class Admin:
                 print(f"Kết thúc phiên làm việc của Admin với bảng {tables}\n")
                 break
 
-            else:
-                print("Lựa chọn không hợp lệ.\n")
+            # else:
+            #     print("Lựa chọn không hợp lệ.\n")
