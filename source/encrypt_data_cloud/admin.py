@@ -1,10 +1,13 @@
 import base
 import sys, os, time, csv, base64, binascii
-from Crypto.Random import get_random_bytes
+from cryptography.hazmat.primitives.ciphers.aead import AESGCMSIV
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
 class Admin:
+    def __init__(self):
+        self.aad = "helloabcdehdbhjjakajsjsjshdj"
+    
     def save_decrypted_data_to_csv(self):
         # Viết dữ liệu đã giải mã vào file CSV mới
         with open(self.decrypted_csv_path, 'w', newline='') as csvfile:
@@ -15,14 +18,24 @@ class Admin:
             for row in zip(*self.decrypted_data.values()):
                 writer.writerow(dict(zip(self.decrypted_data.keys(), row)))
 
-    def generate_keys(self, cols):
+    def set_up(self, cols):
+        self.nonces = []
         self.num_columns = len(cols)
-        self.keys = {}
         for i in range(self.num_columns):
-            self.key = get_random_bytes(16) 
-            self.keys[i] = self.key
+            nonce = os.urandom(12)
+            self.nonces.append(nonce)
+        print(self.nonces)
+            
+
+    def gen_key(self):
+        self.keys = []
+        for i in range(self.num_columns):
+            key = AESGCMSIV.generate_key(bit_length=256)
+            self.keys.append(key)
         print("Tạo key thành công!\n")
         return self.keys
+    
+    
     
     def encrypt_data(self, cols, keys_list, plaintext_csv_path, encrypted_csv_path):
         with open(plaintext_csv_path, 'r', newline='') as input_file,\
@@ -35,8 +48,7 @@ class Admin:
             writer.writeheader()
             for row in self.reader:
                 for i in range(len(cols)):
-                    row[cols[i]] = base.encrypt(row[cols[i]], keys_list[i])
-                    # row[cols[i]] = hex_to_base64(row[cols[i]])
+                    self.iv, row[cols[i]], self.tag = base.encrypt(row[cols[i]], keys_list[i], b"authenticated but not encrypted payload")
                 # Ghi hàng đã mã hóa vào tệp CSV mới
                 writer.writerow(row)
             print("Mã hoá toàn bộ dữ liệu thành công!\n")
@@ -67,16 +79,16 @@ class Admin:
                         # Giải mã dữ liệu cho cột được chọn
                         if self.chosen_column == "all_data"  and len(choices) == 1:
                             for j, col in enumerate(cols):  # Duyệt qua mỗi cột và giải mã giá trị tương ứng
-                                self.ciphertext_hex = row[col]
-                                self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[j])
+                                self.ciphertext_hex = bytes.fromhex(base.base64_to_hex(row[col]))
+                                self.plaintext = base.decrypt(self.ciphertext_hex, keys_list[j], self.nonces[j], self.aad)
                                 # Lưu dữ liệu giải mã vào từ điển
                                 if col not in self.decrypted_data:
                                     self.decrypted_data[col] = []
                                 self.decrypted_data[col].append(self.plaintext)
                         else:
                             i = cols.index(self.chosen_column)
-                            self.ciphertext_hex = row[self.chosen_column]
-                            self.plaintext = base.dencrypt(self.ciphertext_hex, keys_list[i])
+                            self.ciphertext_hex = bytes.fromhex(base.base64_to_hex(row[self.chosen_column]))
+                            self.plaintext = base.decrypt(self.ciphertext_hex, keys_list[i], self.nonces[i], self.aad)
                             # Lưu dữ liệu giải mã vào từ điển
                             if self.chosen_column not in self.decrypted_data:
                                 self.decrypted_data[self.chosen_column] = []
@@ -92,24 +104,23 @@ class Admin:
         print(f"Giải mã thành công! Dữ liệu giải mã được lưu tại '{self.decrypted_csv_path}'!\n")
 
 
-    def process(self, tables, tables_path):
+    def process(self, tables, tables_path, cols):
         while True:
             # Lựa chọn chế độ
             print("Chọn chế độ:")
-            print("1. Tạo key:")
+            print("1. Tạo key - Setup:")
             print("2. Mã hoá:")
             print("3. Giải mã:")
             print("4. Thoát:")
             mode = int(input("Chọn: "))
             print()
+            self.set_up(cols)
 
             # Kiểm tra xem lựa chọn có hợp lệ không và gọi hàm tương ứng
             if mode == 1:
-                cols = base.get_cols(tables_path)
-                keys = self.generate_keys(cols)
+                keys = self.gen_key()
                 base.save_keys_to_file(keys, f"keys_{tables}.txt")
             elif mode == 2:
-                cols = base.get_cols(tables_path)
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")
                 encrypted_csv_path = f"encrypted_{tables}.csv"
                 start_time = time.time()
@@ -120,7 +131,7 @@ class Admin:
             elif mode == 3:
                 keys_list = base.read_keys_from_file(f"keys_{tables}.txt")
                 encrypted_csv_path = f"encrypted_{tables}.csv"
-                cols = base.get_cols(tables_path)
+                self.set_up(cols)
                 mode_map = base.create_mode_map(cols)
                 base.print_cols(cols)
                 # Nhập vào một chuỗi chứa các lựa chọn, mỗi lựa chọn được phân cách bằng dấu phẩy
@@ -136,5 +147,5 @@ class Admin:
                 print(f"Kết thúc phiên làm việc của Admin với bảng {tables}\n")
                 break
 
-            # else:
-            #     print("Lựa chọn không hợp lệ.\n")
+            else:
+                print("Lựa chọn không hợp lệ.\n")

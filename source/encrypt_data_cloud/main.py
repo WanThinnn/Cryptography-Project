@@ -11,7 +11,8 @@ user_type = base.login()
 if user_type == "admin":
     admin_1 = admin.Admin()
     tables, tables_path = base.process_database()
-    admin_1.process(tables, tables_path)
+    cols = base.get_cols(tables_path)
+    admin_1.process(tables, tables_path, cols)
 
 elif user_type == "user":
     user_1 = user.User()

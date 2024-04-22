@@ -1,4 +1,6 @@
 import sys, os, time, csv, base64, binascii
+from cryptography.hazmat.primitives.ciphers import (Cipher, algorithms, modes)
+
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
@@ -19,15 +21,6 @@ def base64_to_hex(base64_string):
     hex_string = binascii.hexlify(decoded_bytes).decode('utf-8')
     return hex_string
 
-def read_keys_from_file(file_path):
-    keys = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # Tách tên key và giá trị key từ mỗi dòng
-            key_value = line.strip()
-            # Thêm key vào danh sách keys
-            keys.append(key_value)
-    return keys
 
 def get_cols(csv_file_path):
     cols = []
@@ -82,7 +75,7 @@ def select_csv_file(database):
 
 def save_keys_to_file(keys, file_path):
     with open(file_path, 'w') as file:
-        for key in keys.values():  # Lặp qua các giá trị của từ điển keys
+        for key in keys:  # Lặp qua các giá trị của từ điển keys
             key_hex = key.hex()  # Chuyển đổi key thành dạng hex
             file.write(f"{key_hex}\n")
 
@@ -91,34 +84,71 @@ def read_keys_from_file(file_path):
     with open(file_path, 'r') as file:
         for line in file:
             # Tách tên key và giá trị key từ mỗi dòng
-            key_value = line.strip()
+            key_bytes = bytes.fromhex(line.strip())
             # Thêm key vào danh sách keys
-            keys.append(key_value)
+            keys.append(key_bytes)
     return keys
 
-def encrypt(plaintext, key256):
-    key_bytes_256 = key256.encode('utf-8')
-    aes_mode = modes.modes(key_bytes_256)
-    cipher = aes_mode.cbc_encrypt(plaintext)
-    return hex_to_base64(cipher.hex())
 
-def dencrypt(ciphertext, key256):
-    key_bytes_256 = key256.encode('utf-8')
-    aes_mode = modes.modes(key_bytes_256)
-    decrypt_function = aes_mode.cbc_decrypt
-    ciphertext_hex = base64_to_hex(ciphertext)
-    ciphertext_bytes = bytes.fromhex(ciphertext_hex)
-    return decrypt_function(ciphertext_bytes)
+# def encrypt(plaintext, key256, nonce, aad):
+#     aesgcmsiv = AESGCMSIV(key256)
+#     ciphertext = aesgcmsiv.encrypt(nonce, plaintext.encode('utf-8'), aad.encode('utf-8'))  # Encode plaintext to bytes
+#     return ciphertext
+
+def encrypt(key, plaintext, associated_data):
+    # Generate a random 96-bit IV.
+    iv = os.urandom(12)
+
+    # Construct an AES-GCM Cipher object with the given key and a
+    # randomly generated IV.
+    encryptor = Cipher(
+        algorithms.AES(key),
+        modes.GCM(iv),
+    ).encryptor()
+
+    # associated_data will be authenticated but not encrypted,
+    # it must also be passed in on decryption.
+    encryptor.authenticate_additional_data(associated_data)
+
+    # Encrypt the plaintext and get the associated ciphertext.
+    # GCM does not require padding.
+    ciphertext = encryptor.update(plaintext) + encryptor.finalize()
+
+    return (iv, ciphertext, encryptor.tag)
+
+# def decrypt(ciphertext, key256, nonce, aad):
+#     aesgcmsiv = AESGCMSIV(key256)
+#     decrypted_data = aesgcmsiv.decrypt(nonce, ciphertext, aad.encode('utf-8'))
+#     return decrypted_data.decode('utf-8')
+
+
+def decrypt(key, associated_data, iv, ciphertext, tag):
+    # Construct a Cipher object, with the key, iv, and additionally the
+    # GCM tag used for authenticating the message.
+    decryptor = Cipher(
+        algorithms.AES(key),
+        modes.GCM(iv, tag),
+    ).decryptor()
+
+    # We put associated_data back in or the tag will fail to verify
+    # when we finalize the decryptor.
+    decryptor.authenticate_additional_data(associated_data)
+
+    # Decryption gets us the authenticated plaintext.
+    # If the tag does not match an InvalidTag exception will be raised.
+    return decryptor.update(ciphertext) + decryptor.finalize()
+
+
 
 def login():
     username = input("Username: ")
     password = input("Password: ")
 
     # Kiểm tra thông tin đăng nhập
-    if username == "admin" and password == "admin123":
+    if username == "admin" and password == "123":
         print("Đăng nhập thành công!\n")
         return "admin"
-    elif username == "user" and password == "user123":
+    elif username == "user" and password == "123":
         print("Đăng nhập thành công!\n")
         return "user"
     else:
