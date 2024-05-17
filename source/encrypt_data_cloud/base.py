@@ -122,9 +122,9 @@ def encrypt(plaintext, key, IV, associated_data):
 def decrypt(ciphertext, key, IV, associated_data):
     ciphertext = Base64ToByte(ciphertext)
     aesgcm = AESGCM(key)
-    plaintext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
-    ciphertext = plaintext_bytes.decode('utf-8')
-    return ciphertext
+    recovertext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
+    recovertext = recovertext_bytes.decode('utf-8')
+    return recovertext
 
 def login():
     username = input("Username: ")
