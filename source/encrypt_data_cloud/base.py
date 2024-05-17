@@ -1,9 +1,15 @@
 import sys, os, time, csv, base64, binascii
-from cryptography.hazmat.primitives.ciphers import (Cipher, algorithms, modes)
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
+
+def ByteToBase64(byte_text):
+    return base64.b64encode(byte_text).decode('utf-8')
+
+def Base64ToByte(byte_text):
+    return base64.b64decode(byte_text)
 
 # Convert text <--> bin
 def message_to_bin(message):
@@ -76,69 +82,49 @@ def select_csv_file(database):
 def save_keys_to_file(keys, file_path):
     with open(file_path, 'w') as file:
         for key in keys:  # Lặp qua các giá trị của từ điển keys
-            key_hex = key.hex()  # Chuyển đổi key thành dạng hex
-            file.write(f"{key_hex}\n")
+            file.write(f"{key}\n")
+            
+def save_ivs_to_file(ivs, file_path):
+    with open(file_path, 'w') as file:
+        for key in ivs:  # Lặp qua các giá trị của từ điển keys
+            file.write(f"{key}\n")
 
 def read_keys_from_file(file_path):
     keys = []
     with open(file_path, 'r') as file:
         for line in file:
             # Tách tên key và giá trị key từ mỗi dòng
-            key_bytes = bytes.fromhex(line.strip())
+            key_byte = Base64ToByte(line.strip())
+                                    
             # Thêm key vào danh sách keys
-            keys.append(key_bytes)
+            keys.append(key_byte)
     return keys
 
+def read_ivs_from_file(file_path):
+    ivs = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            # Tách tên key và giá trị key từ mỗi dòng
+            iv_byte = Base64ToByte(line.strip())
+            # Thêm key vào danh sách keys
+            ivs.append(iv_byte)
+    return ivs
 
-# def encrypt(plaintext, key256, nonce, aad):
-#     aesgcmsiv = AESGCMSIV(key256)
-#     ciphertext = aesgcmsiv.encrypt(nonce, plaintext.encode('utf-8'), aad.encode('utf-8'))  # Encode plaintext to bytes
-#     return ciphertext
+# Hàm mã hóa sử dụng AES GCM
+def encrypt(plaintext, key, IV, associated_data):
+    aesgcm = AESGCM(key)
+    plaintext_bytes = plaintext.encode('utf-8')
+    ciphertext_with_tag = aesgcm.encrypt(IV, plaintext_bytes, associated_data)
+    ciphertext = ByteToBase64(ciphertext_with_tag)
+    return ciphertext
 
-def encrypt(key, plaintext, associated_data):
-    # Generate a random 96-bit IV.
-    iv = os.urandom(12)
-
-    # Construct an AES-GCM Cipher object with the given key and a
-    # randomly generated IV.
-    encryptor = Cipher(
-        algorithms.AES(key),
-        modes.GCM(iv),
-    ).encryptor()
-
-    # associated_data will be authenticated but not encrypted,
-    # it must also be passed in on decryption.
-    encryptor.authenticate_additional_data(associated_data)
-
-    # Encrypt the plaintext and get the associated ciphertext.
-    # GCM does not require padding.
-    ciphertext = encryptor.update(plaintext) + encryptor.finalize()
-
-    return (iv, ciphertext, encryptor.tag)
-
-# def decrypt(ciphertext, key256, nonce, aad):
-#     aesgcmsiv = AESGCMSIV(key256)
-#     decrypted_data = aesgcmsiv.decrypt(nonce, ciphertext, aad.encode('utf-8'))
-#     return decrypted_data.decode('utf-8')
-
-
-def decrypt(key, associated_data, iv, ciphertext, tag):
-    # Construct a Cipher object, with the key, iv, and additionally the
-    # GCM tag used for authenticating the message.
-    decryptor = Cipher(
-        algorithms.AES(key),
-        modes.GCM(iv, tag),
-    ).decryptor()
-
-    # We put associated_data back in or the tag will fail to verify
-    # when we finalize the decryptor.
-    decryptor.authenticate_additional_data(associated_data)
-
-    # Decryption gets us the authenticated plaintext.
-    # If the tag does not match an InvalidTag exception will be raised.
-    return decryptor.update(ciphertext) + decryptor.finalize()
-
-
+# Hàm giải mã sử dụng AES GCM
+def decrypt(ciphertext, key, IV, associated_data):
+    ciphertext = Base64ToByte(ciphertext)
+    aesgcm = AESGCM(key)
+    plaintext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
+    ciphertext = plaintext_bytes.decode('utf-8')
+    return ciphertext
 
 def login():
     username = input("Username: ")

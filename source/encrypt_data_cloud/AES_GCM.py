@@ -1,50 +1,51 @@
 import os
-
-from cryptography.hazmat.primitives.ciphers import (Cipher, algorithms, modes)
-
-def encrypt(plaintext, key, associated_data):
-    # Generate a random 96-bit IV.
-    iv = os.urandom(12)
-
-    # Construct an AES-GCM Cipher object with the given key and a
-    # randomly generated IV.
-    encryptor = Cipher(
-        algorithms.AES(key),
-        modes.GCM(iv),
-    ).encryptor()
-
-    # associated_data will be authenticated but not encrypted,
-    # it must also be passed in on decryption.
-    encryptor.authenticate_additional_data(associated_data)
-
-    # Encrypt the plaintext and get the associated ciphertext.
-    # GCM does not require padding.
-    ciphertext = encryptor.update(plaintext) + encryptor.finalize()
-
-    return (iv, ciphertext, encryptor.tag)
-
-def decrypt(key, associated_data, iv, ciphertext, tag):
-    # Construct a Cipher object, with the key, iv, and additionally the
-    # GCM tag used for authenticating the message.
-    decryptor = Cipher(
-        algorithms.AES(key),
-        modes.GCM(iv, tag),
-    ).decryptor()
-
-    # We put associated_data back in or the tag will fail to verify
-    # when we finalize the decryptor.
-    decryptor.authenticate_additional_data(associated_data)
-
-    # Decryption gets us the authenticated plaintext.
-    # If the tag does not match an InvalidTag exception will be raised.
-    return decryptor.update(ciphertext) + decryptor.finalize()
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import base64
 
 
+def ByteToBase64(key):
+    return base64.b64encode(key).decode('utf-8')
 
-key = b"12345678912345678912345678912345"
+def Base64ToByte(key_base64):
+    return base64.b64decode(key_base64)
 
 
-iv, ciphertext, tag = encrypt(key,b"a secret message!", b"authenticated but not encrypted payload")
+def gen_key_IV():
+    associated_data = "Đây là dữ liệu liên quan.".encode('utf-8')
+    IV = ByteToBase64(os.urandom(12))  # Tạo nonce ngẫu nhiên 16 bytes
+    Key = ByteToBase64(os.urandom(32))  # AES-256
+    return IV, Key, associated_data
 
-print(ciphertext)
-print(decrypt(key,b"authenticated but not encrypted payload",iv,ciphertext,tag))
+
+# Hàm mã hóa sử dụng AES GCM
+def encrypt_with_python(plaintext, key, IV, associated_data):
+    key = Base64ToByte(key)
+    IV = Base64ToByte(IV)
+    aesgcm = AESGCM(key)
+    plaintext_bytes = plaintext.encode('utf-8')
+    ciphertext_with_tag = aesgcm.encrypt(IV, plaintext_bytes, associated_data)
+    ciphertext = ByteToBase64(ciphertext_with_tag)
+    return ciphertext
+
+# Hàm giải mã sử dụng AES GCM
+def decrypt_with_python(ciphertext, key, IV, associated_data):
+    ciphertext = Base64ToByte(ciphertext)
+    IV = Base64ToByte(IV)
+    key = Base64ToByte(key)
+    aesgcm = AESGCM(key)
+    plaintext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
+    ciphertext = plaintext_bytes.decode('utf-8')
+    return ciphertext
+
+# Ví dụ sử dụng
+IV, Key, associated_data = gen_key_IV()
+
+plaintext = "Đây là một thông điệp bí mật."
+
+ciphertext = encrypt_with_python(plaintext, Key, IV, associated_data)
+decrypted_text = decrypt_with_python(ciphertext, Key, IV, associated_data)
+
+print(f"Key (base64): {Key}")
+print(f"IV: (Bas464): {IV}")
+print(f"Encrypted message: {ciphertext}")
+print(f"Decrypted text: {decrypted_text}")

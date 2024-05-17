@@ -1,6 +1,5 @@
 import base
 import sys, os, time, csv, base64, binascii
-from Crypto.Random import get_random_bytes
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 from mypackages import key_expansion,modes
 
