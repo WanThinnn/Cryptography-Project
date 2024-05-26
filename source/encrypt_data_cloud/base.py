@@ -67,11 +67,11 @@ def create_mode_map(cols):
 
 def select_csv_file(database):
     tables = get_tables(database)
-    print_tables(tables)
-    print(f"{len(tables)+1}. Thoát")  # Thêm tuỳ chọn "Thoát"
+    # print_tables(tables)
+    # print(f"{len(tables)+1}. Thoát")  # Thêm tuỳ chọn "Thoát"
     
     choice = int(input("Chọn: "))
-    print()
+    # print()
     if choice == len(tables)+1:
         sys.exit()  # Thoát chương trình nếu người dùng chọn "Thoát"
     elif (choice > len(tables)+1) or (choice < 1):
@@ -110,40 +110,27 @@ def read_ivs_from_file(file_path):
             ivs.append(iv_byte)
     return ivs
 
-# Hàm mã hóa sử dụng AES GCM
-def encrypt(plaintext, key, IV, associated_data):
-    aesgcm = AESGCM(key)
-    plaintext_bytes = plaintext.encode('utf-8')
-    ciphertext_with_tag = aesgcm.encrypt(IV, plaintext_bytes, associated_data)
-    ciphertext = ByteToBase64(ciphertext_with_tag)
-    return ciphertext
 
-# Hàm giải mã sử dụng AES GCM
-def decrypt(ciphertext, key, IV, associated_data):
-    ciphertext = Base64ToByte(ciphertext)
-    aesgcm = AESGCM(key)
-    recovertext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
-    recovertext = recovertext_bytes.decode('utf-8')
-    return recovertext
 
 def login():
-    username = input("Username: ")
-    password = input("Password: ")
+    return "admin"
+    # username = input("Username: ")
+    # password = input("Password: ")
 
-    # Kiểm tra thông tin đăng nhập
-    if username == "admin" and password == "123":
-        print("Đăng nhập thành công!\n")
-        return "admin"
-    elif username == "user" and password == "123":
-        print("Đăng nhập thành công!\n")
-        return "user"
-    else:
-        print("Sai tên người dùng hoặc mật khẩu.")
-        return None
+    # # Kiểm tra thông tin đăng nhập
+    # if username == "admin" and password == "123":
+    #     print("Đăng nhập thành công!\n")
+    #     return "admin"
+    # elif username == "user" and password == "123":
+    #     print("Đăng nhập thành công!\n")
+    #     return "user"
+    # else:
+    #     print("Sai tên người dùng hoặc mật khẩu.")
+    #     return None
     
     
 
 def process_database():
-    tables = select_csv_file("database.txt")
+    tables = select_csv_file("/Users/wanthinnn/Documents/Cryptography/Cryptography-Project/source/database.txt")
     tables_path = f"{tables}.csv"
     return tables, tables_path

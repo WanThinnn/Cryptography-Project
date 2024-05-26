@@ -8,7 +8,7 @@ CREATE TABLE staffs (
     name VARCHAR(100) NOT NULL,
     sex VARCHAR(5) NOT NULL,
     phone VARCHAR(20),
-    home_town VARCHAR(255),
+    address VARCHAR(255),
     birthday DATE,
     join_date DATE,
     position VARCHAR(100),
