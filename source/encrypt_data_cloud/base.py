@@ -28,13 +28,17 @@ def base64_to_hex(base64_string):
     return hex_string
 
 
-def get_cols(csv_file_path):
-    cols = []
-    # Đọc dòng đầu tiên của file CSV và lưu vào mảng cols
-    with open(csv_file_path, 'r', newline='') as csvfile:
+# def get_cols(csv_file_path):
+#     cols = []
+#     # Đọc dòng đầu tiên của file CSV và lưu vào mảng cols
+#     with open(csv_file_path, 'r', newline='') as csvfile:
+#         reader = csv.reader(csvfile)
+#         cols = next(reader)  # Đọc dòng đầu tiên và lưu vào mảng cols
+#     return cols
+def get_cols(csv_file):
+    with open(csv_file, 'r', newline='') as csvfile:
         reader = csv.reader(csvfile)
-        cols = next(reader)  # Đọc dòng đầu tiên và lưu vào mảng cols
-    return cols
+        return next(reader)  # Return the header row as a list of column names
 
 def get_tables(file_path):
     result = []  # Khởi tạo một list để lưu trữ các hàng từ file CSV
@@ -67,11 +71,11 @@ def create_mode_map(cols):
 
 def select_csv_file(database):
     tables = get_tables(database)
-    # print_tables(tables)
-    # print(f"{len(tables)+1}. Thoát")  # Thêm tuỳ chọn "Thoát"
+    print_tables(tables)
+    print(f"{len(tables)+1}. Thoát")  # Thêm tuỳ chọn "Thoát"
     
     choice = int(input("Chọn: "))
-    # print()
+    print()
     if choice == len(tables)+1:
         sys.exit()  # Thoát chương trình nếu người dùng chọn "Thoát"
     elif (choice > len(tables)+1) or (choice < 1):
@@ -79,37 +83,36 @@ def select_csv_file(database):
         sys.exit()  # Kết thúc chương trình nếu có lỗi
     return tables[choice-1]
 
-def save_keys_to_file(keys, file_path):
-    with open(file_path, 'w') as file:
-        for key in keys:  # Lặp qua các giá trị của từ điển keys
-            file.write(f"{key}\n")
-            
-def save_ivs_to_file(ivs, file_path):
-    with open(file_path, 'w') as file:
-        for key in ivs:  # Lặp qua các giá trị của từ điển keys
-            file.write(f"{key}\n")
+def save_keys_to_file(keys, keyfile):
+    with open(keyfile, 'w') as f:
+        f.write("columns, key\n")
+        for column, key in keys.items():
+            f.write(f"{column}, {key}\n")
 
-def read_keys_from_file(file_path):
-    keys = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # Tách tên key và giá trị key từ mỗi dòng
-            key_byte = Base64ToByte(line.strip())
-                                    
-            # Thêm key vào danh sách keys
-            keys.append(key_byte)
+
+def save_ivs_to_file(ivs, ivfile):
+    with open(ivfile, 'w') as f:
+        f.write("columns, iv\n")
+        for column, iv in ivs.items():
+            f.write(f"{column}, {iv}\n")
+
+def read_keys_from_file(keyfile):
+    keys = {}
+    with open(keyfile, 'r') as f:
+        next(f)  # Skip the header
+        for line in f:
+            column, key = line.strip().split(', ')
+            keys[column] = key
     return keys
 
-def read_ivs_from_file(file_path):
-    ivs = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # Tách tên key và giá trị key từ mỗi dòng
-            iv_byte = Base64ToByte(line.strip())
-            # Thêm key vào danh sách keys
-            ivs.append(iv_byte)
+def read_ivs_from_file(ivfile):
+    ivs = {}
+    with open(ivfile, 'r') as f:
+        next(f)  # Skip the header
+        for line in f:
+            column, iv = line.strip().split(', ')
+            ivs[column] = iv
     return ivs
-
 
 
 def login():
