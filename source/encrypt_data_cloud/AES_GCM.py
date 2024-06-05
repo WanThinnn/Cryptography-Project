@@ -1,51 +1,113 @@
-import os
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-import base64
+import json
+import argparse
+from py_abac import PDP, Policy, AccessRequest
+from py_abac.storage.memory import MemoryStorage
 
+def main(args):
+    # Định nghĩa chính sách cho admin trong doanh nghiệp
+    enterprise_policy_json = {
+        "uid": "4",
+        "description": "Admin can perform actions on resources if they belong to the finance department and have the manager role.",
+        "effect": "allow",
+        "rules": {
+            "subject": {
+                "$.role": {
+                    "condition": "Equals",
+                    "value": "admin"
+                },
+                "$.department": {
+                    "condition": "Equals",
+                    "value": "finance"
+                },
+                "$.position": {
+                    "condition": "Equals",
+                    "value": "manager"
+                }
+            },
+            "resource": {
+                "$.type": {
+                    "condition": "Exists"
+                }
+            },
+            "action": [
+                {
+                    "$.method": {
+                        "condition": "Equals",
+                        "value": "view"
+                    }
+                },
+                {
+                    "$.method": {
+                        "condition": "Equals",
+                        "value": "edit"
+                    }
+                }
+            ],
+            "context": {}
+        },
+        "targets": {},
+        "priority": 0
+    }
 
-def ByteToBase64(key):
-    return base64.b64encode(key).decode('utf-8')
+    # Tạo đối tượng Policy từ JSON
+    policy = Policy.from_json(enterprise_policy_json)
 
-def Base64ToByte(key_base64):
-    return base64.b64decode(key_base64)
+    # Tạo một bộ nhớ trong để lưu trữ các chính sách
+    storage = MemoryStorage()
 
+    # Thêm chính sách vào bộ nhớ
+    storage.add(policy)
 
-def gen_key_IV():
-    associated_data = "Đây là dữ liệu liên quan.".encode('utf-8')
-    IV = ByteToBase64(os.urandom(12))  # Tạo nonce ngẫu nhiên 16 bytes
-    Key = ByteToBase64(os.urandom(32))  # AES-256
-    return IV, Key, associated_data
+    # Tạo một Policy Decision Point (PDP) với bộ nhớ
+    pdp = PDP(storage)
 
+    # Định nghĩa yêu cầu truy cập theo định dạng đã cập nhật
+    request_access_format = {
+        "subject": {
+            "id": "2",
+            "attributes": {
+                "role": args.role,
+                "department": args.department,
+                "position": args.position
+            }
+        },
+        "resource": {
+            "id": "2",
+            "attributes": {
+                "type": args.resource_type
+            }
+        },
+        "action": {
+            "id": "3",
+            "attributes": {
+                "method": args.action_method
+            }
+        },
+        "context": {}
+    }
 
-# Hàm mã hóa sử dụng AES GCM
-def encrypt_with_python(plaintext, key, IV, associated_data):
-    key = Base64ToByte(key)
-    IV = Base64ToByte(IV)
-    aesgcm = AESGCM(key)
-    plaintext_bytes = plaintext.encode('utf-8')
-    ciphertext_with_tag = aesgcm.encrypt(IV, plaintext_bytes, associated_data)
-    ciphertext = ByteToBase64(ciphertext_with_tag)
-    return ciphertext
+    request = AccessRequest.from_json(request_access_format)
 
-# Hàm giải mã sử dụng AES GCM
-def decrypt_with_python(ciphertext, key, IV, associated_data):
-    ciphertext = Base64ToByte(ciphertext)
-    IV = Base64ToByte(IV)
-    key = Base64ToByte(key)
-    aesgcm = AESGCM(key)
-    plaintext_bytes = aesgcm.decrypt(IV, ciphertext, associated_data)
-    ciphertext = plaintext_bytes.decode('utf-8')
-    return ciphertext
+    # Kiểm tra chính sách và yêu cầu
+    print("\nPolicy:")
+    print(json.dumps(policy.to_json(), indent=4))
 
-# Ví dụ sử dụng
-IV, Key, associated_data = gen_key_IV()
+    print("\nAccess Request:")
+    print(json.dumps(request_access_format, indent=4))
 
-plaintext = "Đây là một thông điệp bí mật."
+    # Đánh giá yêu cầu
+    if pdp.is_allowed(request):
+        print(f"\nAccess request is allowed")
+    else:
+        print(f"\nAccess request is denied")
 
-ciphertext = encrypt_with_python(plaintext, Key, IV, associated_data)
-decrypted_text = decrypt_with_python(ciphertext, Key, IV, associated_data)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Check access policy for a given request")
+    parser.add_argument("role", type=str, help="Role of the subject")
+    parser.add_argument("department", type=str, help="Department of the subject")
+    parser.add_argument("position", type=str, help="Position of the subject")
+    parser.add_argument("resource_type", type=str, help="Type of the resource")
+    parser.add_argument("action_method", type=str, help="Method of the action")
 
-print(f"Key (base64): {Key}")
-print(f"IV: (Bas464): {IV}")
-print(f"Encrypted message: {ciphertext}")
-print(f"Decrypted text: {decrypted_text}")
+    args = parser.parse_args()
+    main(args)
