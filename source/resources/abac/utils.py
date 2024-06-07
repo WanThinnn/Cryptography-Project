@@ -1,7 +1,8 @@
+#utils.py
 import netifaces
 
 def get_wifi_ip():
-    # Get the IP address of the connected Wi-Fi network
+    # Lấy địa chỉ IP của mạng Wi-Fi đang kết nối
     interfaces = netifaces.interfaces()
     for iface in interfaces:
         if iface.startswith('wlan') or iface.startswith('wlp'):
