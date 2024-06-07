@@ -1,10 +1,9 @@
 import json
-import argparse
 from py_abac import PDP, Policy, AccessRequest
 from py_abac.storage.memory import MemoryStorage
 
-def main(args):
-    # Định nghĩa chính sách cho admin trong doanh nghiệp
+def create_pdp():
+    # Define the policy for admin in the finance department
     enterprise_policy_json = {
         "uid": "4",
         "description": "Admin can perform actions on resources if they belong to the finance department and have the manager role.",
@@ -22,6 +21,10 @@ def main(args):
                 "$.position": {
                     "condition": "Equals",
                     "value": "manager"
+                },
+                "$.ip_address": {
+                    "condition": "Equals",
+                    "value": "10.45.168.234"
                 }
             },
             "resource": {
@@ -49,38 +52,42 @@ def main(args):
         "priority": 0
     }
 
-    # Tạo đối tượng Policy từ JSON
+    # Create a Policy object from JSON
     policy = Policy.from_json(enterprise_policy_json)
 
-    # Tạo một bộ nhớ trong để lưu trữ các chính sách
+    # Create an in-memory storage to store the policies
     storage = MemoryStorage()
 
-    # Thêm chính sách vào bộ nhớ
+    # Add the policy to the storage
     storage.add(policy)
 
-    # Tạo một Policy Decision Point (PDP) với bộ nhớ
+    # Create a Policy Decision Point (PDP) with the storage
     pdp = PDP(storage)
 
-    # Định nghĩa yêu cầu truy cập theo định dạng đã cập nhật
+    return pdp
+
+def check_access(pdp, role, department, position, resource_type, action_method, ip_address):
+    # Define the access request
     request_access_format = {
         "subject": {
             "id": "2",
             "attributes": {
-                "role": args.role,
-                "department": args.department,
-                "position": args.position
+                "role": role,
+                "department": department,
+                "position": position,
+                "ip_address": ip_address
             }
         },
         "resource": {
             "id": "2",
             "attributes": {
-                "type": args.resource_type
+                "type": resource_type
             }
         },
         "action": {
             "id": "3",
             "attributes": {
-                "method": args.action_method
+                "method": action_method
             }
         },
         "context": {}
@@ -88,26 +95,9 @@ def main(args):
 
     request = AccessRequest.from_json(request_access_format)
 
-    # # Kiểm tra chính sách và yêu cầu
-    # print("\nPolicy:")
-    # print(json.dumps(policy.to_json(), indent=4))
-
-    # print("\nAccess Request:")
-    # print(json.dumps(request_access_format, indent=4))
-
-    # Đánh giá yêu cầu
+    # Check the access request
+    print(f"Checking access for action: {action_method}")
     if pdp.is_allowed(request):
-        print(f"\nAccess request is allowed")
+        print(f"Access request for {action_method} is allowed\n")
     else:
-        print(f"\nAccess request is denied")
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Check access policy for a given request")
-    parser.add_argument("role", type=str, help="Role of the subject")
-    parser.add_argument("department", type=str, help="Department of the subject")
-    parser.add_argument("position", type=str, help="Position of the subject")
-    parser.add_argument("resource_type", type=str, help="Type of the resource")
-    parser.add_argument("action_method", type=str, help="Method of the action")
-
-    args = parser.parse_args()
-    main(args)
+        print(f"Access request for {action_method} is denied\n")

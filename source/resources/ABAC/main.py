@@ -1,58 +1,29 @@
-import py_abac
-from py_abac import PDP, Request
-from py_abac.policy import Policy
-from py_abac.storage.sql import SQLStorage
-import mysql.connector
-import json
+import argparse
+from policy import create_pdp, check_access
+from utils import get_wifi_ip
 
-# Kết nối tới MySQL
-conn = mysql.connector.connect(
-    host="company-database.clce6ae44hhz.ap-southeast-2.rds.amazonaws.com",
-    user="admin",
-    password="24122003",
-    database="company_db"
-)
+def main(args):
+    # Create the PDP
+    pdp = create_pdp()
 
-# Khởi tạo PDP với bộ lưu trữ SQL sử dụng MySQL
-storage = SQLStorage(conn)
-pdp = PDP(storage)
+    # Get the IP address of the Wi-Fi network
+    ip_address = get_wifi_ip()
 
-# Tải chính sách từ tệp JSON và thêm vào bộ lưu trữ
-with open('policies.json') as f:
-    policies = json.load(f)
-    for policy_json in policies:
-        policy = Policy.from_json(policy_json)
-        storage.add(policy)
+    if ip_address is not None:
+        # Check access for the given action
+        action_method = args.action_methods
+        check_access(pdp, args.role, args.department, args.position, args.resource_type, action_method, ip_address)
+    else:
+        print("Could not retrieve Wi-Fi IP address.")
 
-# Hàm kiểm tra quyền truy cập
-def check_access(user_role):
-    request_json = {
-        "subject": {
-            "id": "user-1",
-            "attributes": {
-                "role": user_role
-            }
-        },
-        "resource": {
-            "id": "resource-1",
-            "attributes": {}
-        },
-        "action": {
-            "id": "action-1",
-            "attributes": {}
-        },
-        "context": {}
-    }
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Check access policy for a given request")
+    parser.add_argument("role", type=str, help="Role of the subject")
+    parser.add_argument("department", type=str, help="Department of the subject")
+    parser.add_argument("position", type=str, help="Position of the subject")
+    parser.add_argument("resource_type", type=str, help="Type of the resource")
+    parser.add_argument("action_methods", type=str, nargs='?', help="Method of the action")
 
-    request = Request.from_json(request_json)
-    decision = pdp.is_allowed(request)
-    return decision
+    args = parser.parse_args()
 
-# Kiểm tra quyền truy cập với các vai trò khác nhau
-roles_to_check = ["employee", "guest", "admin"]
-
-for role in roles_to_check:
-    print(f"Access check for role '{role}': {check_access(role)}")
-
-# Đóng kết nối MySQL
-conn.close()
+    main(args)
