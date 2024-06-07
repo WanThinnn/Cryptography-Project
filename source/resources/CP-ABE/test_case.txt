@@ -1,0 +1,4 @@
+python3 main.py setup /Users/wanthinnn/Documents/NT219/Cryptography-Project/source/resources/CP-ABE
+python3 main.py genkey public_key.bin master_key.bin "A,B,C" mykey.csv
+python3 main.py encrypt public_key.bin key.csv ciphertext.csv
+python3 main.py decrypt public_key.bin mykey.txt ciphertext.csv rcv.csv
