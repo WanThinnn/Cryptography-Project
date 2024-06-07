@@ -1,22 +1,11 @@
-import sys
+#main.py
+import argparse
 from policy import create_pdp, check_access, add_policy_to_db
 from utils import get_wifi_ip
 from db import get_sqlalchemy_engine
 from sqlalchemy.exc import OperationalError
 
-def main():
-    # Kiểm tra số lượng tham số CLI
-    if len(sys.argv) != 6:
-        print("Usage:\n \tpython3 main.py <role> <department> <position> <resource_type> <action_method>")
-        sys.exit(1)
-
-    # Lấy các tham số từ CLI
-    role = sys.argv[1]
-    department = sys.argv[2]
-    position = sys.argv[3]
-    resource_type = sys.argv[4]
-    action_method = sys.argv[5]
-
+def main(args):
     # Cấu hình kết nối cơ sở dữ liệu
     db_config = {
         'host': "company-database.clce6ae44hhz.ap-southeast-2.rds.amazonaws.com",
@@ -56,10 +45,10 @@ def main():
                     "condition": "Equals",
                     "value": "manager"
                 },
-                "$.ip_address": {
-                    "condition": "Equals",
-                    "value": "192.168.1.30"
-                }
+                # "$.ip_address": {
+                #     "condition": "Equals",
+                #     "value": "192.168.1.30"
+                # }
             },
             "resource": {
                 "$.type": {
@@ -90,11 +79,24 @@ def main():
 
     ip_address = get_wifi_ip()
 
-    if ip_address is not None:
-        print(f"Wi-Fi IP address: {ip_address}")
-        check_access(pdp, role, department, position, resource_type, action_method, ip_address)
-    else:
-        print("Could not retrieve Wi-Fi IP address.")
+    action_method = args.action_methods
+    check_access(pdp, args.role, args.department, args.position, args.resource_type, action_method, ip_address)
+
+    # if ip_address is not None:
+    #     print(f"Wi-Fi IP address: {ip_address}")
+    #     action_method = args.action_methods
+    #     check_access(pdp, args.role, args.department, args.position, args.resource_type, action_method, ip_address)
+    # else:
+    #     print("Could not retrieve Wi-Fi IP address.")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Check access policy for a given request")
+    parser.add_argument("role", type=str, help="Role of the subject")
+    parser.add_argument("department", type=str, help="Department of the subject")
+    parser.add_argument("position", type=str, help="Position of the subject")
+    parser.add_argument("resource_type", type=str, help="Type of the resource")
+    parser.add_argument("action_methods", type=str, nargs='?', help="Method of the action")
+
+    args = parser.parse_args()
+
+    main(args)
