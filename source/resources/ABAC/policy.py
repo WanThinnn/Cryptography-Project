@@ -1,75 +1,50 @@
 import json
 from py_abac import PDP, Policy, AccessRequest
-from py_abac.storage.sql import SQLStorage
-from sqlalchemy.orm import sessionmaker
+from py_abac.storage.memory import MemoryStorage
+from db import get_db_connection, close_db_connection, call_add_policy_procedure
 
-def create_pdp(engine):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    storage = SQLStorage(session)
-    
-    # Gọi stored procedure để lấy tất cả các chính sách
-    try:
-        with engine.connect() as connection:
-            result = connection.execute("CALL getPolicies()")
-            policies = result.fetchall()
-            for policy in policies:
-                policy_data = {
-                    "uid": policy[0],
-                    "description": policy[1],
-                    "effect": policy[2],
-                    "rules": json.loads(policy[3]),
-                    "targets": json.loads(policy[4])
-                }
-                policy_obj = Policy.from_json(policy_data)
-                storage.add(policy_obj)
-                print(f"Policy loaded into PDP: {policy_data}")
-    except Exception as e:
-        print(f"Error fetching policies from database: {e}")
-    finally:
-        session.close()
-    
-    return PDP(storage)
+def create_pdp():
+    # Create an in-memory storage to store the policies
+    storage = MemoryStorage()
 
+    # Load policies from the database
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM policies")
+        policies = cursor.fetchall()
+        cursor.close()
+        close_db_connection(connection)
 
-def add_policy_to_db(engine, policy_json):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    try:
-        policy = Policy.from_json(policy_json)
-        session.execute(
-            "CALL AddPolicy(:id, :description, :effect, :rules, :target)",
-            {
-                'id': policy.uid,
-                'description': policy.description,
-                'effect': policy.effect,
-                'rules': json.dumps(policy_json['rules']),
-                'target': json.dumps(policy_json['targets']) if 'targets' in policy_json else json.dumps({})
-            }
-        )
-        session.commit()
-        print("Policy added to database successfully.")
-        
-        # Kiểm tra lại chính sách đã lưu
-        result = session.execute("SELECT * FROM policies WHERE id = :id", {'id': policy.uid}).fetchone()
-        print(f"Policy in DB: {result}")
+        for policy_data in policies:
+            policy = Policy.from_json({
+                "uid": policy_data["id"],
+                "description": policy_data["description"],
+                "effect": policy_data["effect"],
+                "rules": json.loads(policy_data["rules"]),
+                "targets": json.loads(policy_data["target"])
+            })
+            storage.add(policy)
+            print(f"Policy loaded into PDP: {policy_data}")
 
-    except Exception as e:
-        print(f"Error adding policy to database: {e}")
-        session.rollback()
-    finally:
-        session.close()
+    # Create a Policy Decision Point (PDP) with the storage
+    pdp = PDP(storage)
 
-def check_access(pdp, role, department, position, resource_type, action_method, ip_address):
-    # Định nghĩa yêu cầu truy cập
+    return pdp
+
+def add_policy_to_db(policy_json):
+    policy = Policy.from_json(policy_json)
+    call_add_policy_procedure(policy_json)
+
+def check_access(pdp, role, department, position, resource_type, action_method):
+    # Define the access request
     request_access_format = {
         "subject": {
             "id": "2",
             "attributes": {
                 "role": role,
                 "department": department,
-                "position": position,
-                "ip_address": ip_address
+                "position": position
             }
         },
         "resource": {
@@ -88,13 +63,10 @@ def check_access(pdp, role, department, position, resource_type, action_method, 
     }
 
     request = AccessRequest.from_json(request_access_format)
-    print(f"Access request: {request_access_format}")
 
-    # Kiểm tra yêu cầu
+    # Check the access request
     print(f"Checking access for action: {action_method}")
-    is_allowed = pdp.is_allowed(request)
-    print(f"PDP Decision: {is_allowed}")
-    if is_allowed:
+    if pdp.is_allowed(request):
         print(f"Access request for {action_method} is allowed\n")
     else:
         print(f"Access request for {action_method} is denied\n")
