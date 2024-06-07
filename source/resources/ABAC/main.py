@@ -45,10 +45,11 @@ def main(args):
                     "condition": "Equals",
                     "value": "manager"
                 },
-                # "$.ip_address": {
-                #     "condition": "Equals",
-                #     "value": "192.168.1.30"
-                # }
+                "$.ip_address": {
+                    # "condition": "Equals",
+                    # "value": "192.168.1.30"
+                    "condition": "Exists"
+                }
             },
             "resource": {
                 "$.type": {
