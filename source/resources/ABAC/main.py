@@ -1,27 +1,34 @@
+# main.py
 import sys
 from ABAC import AttributeBasedAccessControl
 
 def main():
     # Kiểm tra số lượng tham số CLI
-    if len(sys.argv) != 6:
-        print("Usage:\n \tpython3 main.py <role> <department> <position> <resource_type> <action_method>")
+    if len(sys.argv) != 4:
+        print("Usage:\n \tpython3 main.py <username> <resource_type> <action_method>")
         sys.exit(1)
 
     # Lấy các tham số từ CLI
-    role = sys.argv[1]
-    department = sys.argv[2]
-    position = sys.argv[3]
-    resource_type = sys.argv[4]
-    action_method = sys.argv[5]
+    username = sys.argv[1]
+    resource_type = sys.argv[2]
+    action_method = sys.argv[3]
 
-    # Sample access request JSON for a patient
+    abac = AttributeBasedAccessControl()
+
+    # Lấy thông tin nhân viên từ MySQL
+    employee = abac.get_employee_attributes(username)
+    if not employee:
+        print(f"No employee found with username {username}")
+        sys.exit(1)
+
+    # Tạo yêu cầu truy cập
     request_access_format = {
         "subject": {
-            "id": "2",
+            "id": username,
             "attributes": {
-                "role": role,
-                "department": department,
-                "position": position,
+                "role": employee['role'],
+                "department": employee['department'],
+                "position": employee['position'],
             }
         },
         "resource": {
@@ -39,7 +46,6 @@ def main():
         "context": {}
     }
 
-    abac = AttributeBasedAccessControl()
     if abac.is_request_allowed(request_access_format):
         print("Allowed")
     else:

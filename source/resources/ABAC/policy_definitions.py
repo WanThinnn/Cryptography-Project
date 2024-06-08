@@ -1,3 +1,4 @@
+#policy_definitions.py
 policy_json = {
     "uid": "4",
     "description": "Admin can perform actions on resources if they belong to the finance department and have the manager role.",
@@ -19,7 +20,7 @@ policy_json = {
         },
         "resource": {
             "$.type": {
-                "condition": "Exists"
+                "condition": "Exists",
             }
         },
         "action": [
