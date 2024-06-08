@@ -1,8 +1,5 @@
-# main.py
 import sys
-from access_control import AccessControl
-
-
+from ABAC import AttributeBasedAccessControl
 
 def main():
     # Kiểm tra số lượng tham số CLI
@@ -17,34 +14,33 @@ def main():
     resource_type = sys.argv[4]
     action_method = sys.argv[5]
 
-
     # Sample access request JSON for a patient
     request_access_format = {
         "subject": {
-                "id": "2",
-                "attributes": {
-                    "role": role,
-                    "department": department,
-                    "position": position,
-                }
-            },
-            "resource": {
-                "id": "2",
-                "attributes": {
-                    "type": resource_type
-                }
-            },
-            "action": {
-                "id": "3",
-                "attributes": {
-                    "method": action_method
-                }
-            },
-            "context": {}
+            "id": "2",
+            "attributes": {
+                "role": role,
+                "department": department,
+                "position": position,
+            }
+        },
+        "resource": {
+            "id": "2",
+            "attributes": {
+                "type": resource_type
+            }
+        },
+        "action": {
+            "id": "3",
+            "attributes": {
+                "method": action_method
+            }
+        },
+        "context": {}
     }
 
-    ac = AccessControl()
-    if ac.is_request_allowed(request_access_format):
+    abac = AttributeBasedAccessControl()
+    if abac.is_request_allowed(request_access_format):
         print("Allowed")
     else:
         print("Denied")
