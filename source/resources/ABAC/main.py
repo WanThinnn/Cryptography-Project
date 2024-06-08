@@ -1,50 +1,53 @@
-import argparse
-from policy import create_pdp, check_access, add_policy_to_db
+# main.py
+import sys
+from access_control import AccessControl
 
-def main(args):
-    # Create the PDP
-    pdp = create_pdp()
 
-    # Define the policy to add to the database
-    policy_json = {
-        "uid": "4",
-        "description": "Admin can perform actions on resources if they belong to the finance department and have the manager role.",
-        "effect": "allow",
-        "rules": {
-            "subject": {
-                "$.role": {"condition": "Equals", "value": "admin"},
-                "$.department": {"condition": "Equals", "value": "finance"},
-                "$.position": {"condition": "Equals", "value": "manager"}
+
+def main():
+    # Kiểm tra số lượng tham số CLI
+    if len(sys.argv) != 6:
+        print("Usage:\n \tpython3 main.py <role> <department> <position> <resource_type> <action_method>")
+        sys.exit(1)
+
+    # Lấy các tham số từ CLI
+    role = sys.argv[1]
+    department = sys.argv[2]
+    position = sys.argv[3]
+    resource_type = sys.argv[4]
+    action_method = sys.argv[5]
+
+
+    # Sample access request JSON for a patient
+    request_access_format = {
+        "subject": {
+                "id": "2",
+                "attributes": {
+                    "role": role,
+                    "department": department,
+                    "position": position,
+                }
             },
             "resource": {
-                "$.type": {"condition": "Exists"}
+                "id": "2",
+                "attributes": {
+                    "type": resource_type
+                }
             },
-            "action": [
-                {"$.method": {"condition": "Equals", "value": "view"}},
-                {"$.method": {"condition": "Equals", "value": "edit"}}
-            ],
+            "action": {
+                "id": "3",
+                "attributes": {
+                    "method": action_method
+                }
+            },
             "context": {}
-        },
-        "targets": {},
-        "priority": 0
     }
 
-    # Add the policy to the database
-    add_policy_to_db(policy_json)
-
-    # Check access for the given action
-    action_method = args.action_methods
-    check_access(pdp, args.role, args.department, args.position, args.resource_type, action_method)
-
+    ac = AccessControl()
+    if ac.is_request_allowed(request_access_format):
+        print("Allowed")
+    else:
+        print("Denied")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Check access policy for a given request")
-    parser.add_argument("role", type=str, help="Role of the subject")
-    parser.add_argument("department", type=str, help="Department of the subject")
-    parser.add_argument("position", type=str, help="Position of the subject")
-    parser.add_argument("resource_type", type=str, help="Type of the resource")
-    parser.add_argument("action_methods", type=str, nargs='?', help="Method of the action")
-
-    args = parser.parse_args()
-
-    main(args)
+    main()
