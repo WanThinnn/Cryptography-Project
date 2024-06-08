@@ -4,7 +4,7 @@ import sys
 import os
 
 class Client:
-    def __init__(self, host='192.168.1.3', port=10023):
+    def __init__(self, host='192.168.1.5', port=10023):
         self.host = host
         self.port = port
 

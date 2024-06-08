@@ -5,7 +5,7 @@ import random
 import string
 
 class Server:
-    def __init__(self, host='192.168.1.3', port=10023, certfile=None, keyfile=None):
+    def __init__(self, host='192.168.50.1', port=10023, certfile=None, keyfile=None):
         self.host = host
         self.port = port
         self.certfile = certfile
