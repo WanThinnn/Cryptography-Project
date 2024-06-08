@@ -21,13 +21,18 @@ class ProcessCloud:
             password=self.password,
             database=self.database
         )
+    def deconnect_from_db(self):
+        self.connection.close()
+        self.connection = self.connect_to_db()
 
     def get_tables(self):
         cursor = self.connection.cursor()
-        cursor.execute("SHOW TABLES")
+        cursor.execute(f"SHOW TABLES")
         tables = [table[0] for table in cursor.fetchall()]
         cursor.close()
         return tables
+
+
 
     def get_columns(self, table_name):
         cursor = self.connection.cursor()
