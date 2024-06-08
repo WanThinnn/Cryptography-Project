@@ -1,8 +1,8 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QCheckBox, QVBoxLayout, QSizePolicy
-from gui import Ui_MainWindow
+from do_gui import Ui_MainWindow
 from PyQt6.QtGui import QIcon
-from functions import DatabaseHandler
+from do_functions import DatabaseHandler
 
 class MainWindow(QMainWindow):
     def __init__(self):

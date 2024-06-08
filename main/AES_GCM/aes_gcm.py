@@ -1,7 +1,18 @@
 
+import sys
+import os
 
-import base as base
-import sys, os, time, csv, base64, binascii
+# Lấy đường dẫn hiện tại của tệp đang chạy
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Lấy đường dẫn của thư mục cha
+parent_dir = os.path.dirname(current_dir)
+
+# Thêm đường dẫn của thư mục cha vào sys.path
+sys.path.append(parent_dir)
+
+import base
+import time, csv, base64, binascii
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 sys.path.append(os.getcwd()) # get curent working dir and export to python paths
 

@@ -1,10 +1,22 @@
 import sys
+import os
+# Lấy đường dẫn hiện tại của tệp đang chạy
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Lấy đường dẫn của thư mục cha
+parent_dir = os.path.dirname(current_dir)
+from PyQt6.QtWidgets import *
+# Thêm đường dẫn của thư mục cha vào sys.path
+sys.path.append(parent_dir)
 import platform
 import subprocess
 from PyQt6.QtWidgets import *
 from mysql.connector import connect
-from aes_gcm import AES_GCM
-from gui import Ui_MainWindow
+aes_gcm_dir = os.path.join(parent_dir, 'AES_GCM')
+sys.path.append(aes_gcm_dir)
+from AES_GCM.aes_gcm import *
+
+# from cloud import *
 
 class DatabaseHandler:
     def __init__(self, ui):
@@ -16,7 +28,7 @@ class DatabaseHandler:
         )
         self.aes_gcm = AES_GCM()
         self.ui = ui
-
+        # self.process_cloud = ProcessCloud()  # Instance of ProcessCloud
         self.keyfile = ''
         self.plaintext_file = ''
         self.encrypted_file = ''
@@ -119,3 +131,21 @@ class DatabaseHandler:
         if self.encrypted_file and self.keyfile:
             self.aes_gcm.decrypt_data(self.decrypted_file, selected_columns, None, self.encrypted_file, self.keyfile)
             self.show_message("Success", "Data has been decrypted successfully.")
+    
+    def decrypt_data_du(self, ui):
+        selected_columns = self.get_selected_columns()
+
+        if not self.encrypted_file:
+            # Truy vấn cơ sở dữ liệu và lưu dữ liệu vào file CSV
+            query = "SELECT * FROM your_table_name"  # Thay thế bằng câu truy vấn của bạn
+            self.encrypted_file = self.process_cloud.query_db_to_csv(query, "temporary_encrypted_file.csv")
+
+        if not self.decrypted_file:
+            self.select_decryptedfile(ui)
+        if not self.keyfile:
+            self.select_keyfile(ui)
+
+        if self.encrypted_file and self.keyfile:
+            self.aes_gcm.decrypt_data(self.decrypted_file, selected_columns, None, self.encrypted_file, self.keyfile)
+            self.show_message("Success", "Data has been decrypted successfully.")
+
