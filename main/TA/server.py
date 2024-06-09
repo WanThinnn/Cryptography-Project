@@ -6,7 +6,7 @@ import sys
 import os
 
 class Server:
-    def __init__(self, host='127.0.0.1', port=10023, certfile=None, keyfile=None):
+    def __init__(self, host='192.168.1.4', port=10023, certfile=None, keyfile=None):
         self.host = host
         self.port = port
         self.certfile = certfile
@@ -100,5 +100,5 @@ class Server:
         self.TAsetup(path)
 
 if __name__ == "__main__":
-    server = Server(certfile='localhost.crt', keyfile='localhost.key')
+    server = Server(certfile='ecc_cert.pem', keyfile='private_key.pem')
     server.start()
