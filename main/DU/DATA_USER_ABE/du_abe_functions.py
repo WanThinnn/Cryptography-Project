@@ -63,9 +63,10 @@ class ProcessDB:
     def get_tables(self):
         cursor = self.connection.cursor()
         cursor.execute("SHOW TABLES")
-        tables = [table[0] for table in cursor.fetchall()]
+        tables = [table[0] for table in cursor.fetchall() if table[0].startswith("keys")]
         cursor.close()
         return tables
+
 
     def connect_to_server(self, ui):
         try:
