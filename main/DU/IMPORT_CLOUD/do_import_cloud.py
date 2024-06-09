@@ -1,6 +1,9 @@
 import mysql.connector
 import pandas as pd
 from PyQt6.QtWidgets import QFileDialog, QMessageBox
+from AES_GCM.aes_gcm import *
+
+from PyQt6.QtWidgets import QCheckBox, QMessageBox
 
 class ProcessCloud:
     def __init__(self):
@@ -13,6 +16,7 @@ class ProcessCloud:
         self.encrypted_file = None
         self.decrypted_file = None
         self.keyfile = None
+        self.aes_gcm = AES_GCM()
 
     def connect_to_db(self):
         return mysql.connector.connect(
@@ -21,6 +25,7 @@ class ProcessCloud:
             password=self.password,
             database=self.database
         )
+    
     def deconnect_from_db(self):
         self.connection.close()
         self.connection = self.connect_to_db()
@@ -31,8 +36,6 @@ class ProcessCloud:
         tables = [table[0] for table in cursor.fetchall()]
         cursor.close()
         return tables
-
-
 
     def get_columns(self, table_name):
         cursor = self.connection.cursor()
@@ -122,8 +125,20 @@ class ProcessCloud:
             self.keyfile = file
             print(f"Key file selected: {file}")
 
+    def get_selected_columns(self, ui):
+        selected_columns = []
+        layout = ui.verticalLayout_scrollArea
+
+        # Iterate through all widgets in the layout
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
+            if isinstance(widget, QCheckBox) and widget.isChecked():
+                selected_columns.append(widget.text())
+
+        return selected_columns
+
     def decrypt_data_du(self, ui):
-        selected_columns = self.get_selected_columns()
+        selected_columns = self.get_selected_columns(ui)
 
         # Lấy tên bảng từ comboBox
         table_name = ui.comboBox_table.currentText()
@@ -131,7 +146,7 @@ class ProcessCloud:
         if not self.encrypted_file:
             # Truy vấn cơ sở dữ liệu và lưu dữ liệu vào file CSV
             query = f"SELECT * FROM `{table_name}`"  # Sử dụng tên bảng từ comboBox
-            self.encrypted_file = self.query_db_to_csv(query, "temporary_encrypted_file.csv")
+            self.encrypted_file = self.query_db_to_csv(query, f"keys_{table_name}.csv")
 
         if not self.decrypted_file:
             self.select_decryptedfile(ui)
