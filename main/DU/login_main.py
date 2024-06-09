@@ -36,6 +36,7 @@ class LoginWindow(QMainWindow):
     def open_main_form(self, username):
         self.home_window = HomeWindows(username)
         self.home_window.show()
+        self.hide()  # Ẩn cửa sổ đăng nhập khi mở cửa sổ chính
         
     def login(self):
         username = self.ui.lineEdit_username.text()

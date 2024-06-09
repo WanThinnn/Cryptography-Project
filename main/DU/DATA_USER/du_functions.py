@@ -41,8 +41,8 @@ class DatabaseHandler:
         with self.connection.cursor() as cursor:
             cursor.execute(query)
             result = cursor.fetchall()
-        return [row[0] for row in result]
-
+        filtered_tables = [row[0] for row in result if not row[0].startswith("keys") and row[0] not in ["login_table", "employee"]]
+        return filtered_tables
     def get_columns(self, table_name):
         query = f"SHOW COLUMNS FROM {table_name}"
         with self.connection.cursor() as cursor:

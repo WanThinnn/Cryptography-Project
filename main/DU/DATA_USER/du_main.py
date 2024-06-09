@@ -25,8 +25,10 @@ class AES_MainWindow(QMainWindow):
         self.ui.pushButton_decryptedfile.clicked.connect(lambda: self.db_handler.select_decryptedfile(self.ui))
 
     def on_combo_box_changed(self):
-        self.populate_columns()
-        self.check_access(self.username, self.ui.comboBox_table.currentText())
+        resource_type = self.ui.comboBox_table.currentText()
+        access_granted = self.check_access(self.username, resource_type)
+        if access_granted:
+            self.populate_columns()
     
     def check_access(self, username, resource_type):
         abac = AttributeBasedAccessControl()
@@ -36,7 +38,7 @@ class AES_MainWindow(QMainWindow):
         print(employee)
         if not employee:
             print(f"No employee found with username {username}")
-            return
+            return False
 
         # Tạo yêu cầu truy cập
         request_access_format = {
@@ -66,11 +68,12 @@ class AES_MainWindow(QMainWindow):
 
         if abac.is_request_allowed(request_access_format):
             print("Allowed")
-            # self.show_message("Access Granted", "Your access request has been approved.", QMessageBox.Icon.Information)
+            return True
         else:
             print("Denied")
             self.show_message("Access Denied", "You do not have permission to access this resource.", QMessageBox.Icon.Warning)
-    
+            return False
+        
     def show_message(self, title, message, icon):
         msg_box = QMessageBox()
         msg_box.setWindowTitle(title)
