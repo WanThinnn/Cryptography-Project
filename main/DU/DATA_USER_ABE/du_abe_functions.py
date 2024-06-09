@@ -36,29 +36,42 @@ class ProcessDB:
 
     def get_ciphertext(self, table_name, file_path):
         cursor = self.connection.cursor()
-        cipher_file = file_path + '/' + table_name + '.csv'
+        cipher_file = f"{file_path}/{table_name}.csv"
+        
         try:
+            # Fetch data from the database
             query = f"SELECT * FROM {table_name}"
             cursor.execute(query)
             result = cursor.fetchall()
-
+            
             # Get the column names
             columns = [desc[0] for desc in cursor.description]
 
-            # Write the column names to the file
-            with open(cipher_file, 'w') as file:
-                file.write(','.join(columns) + '\n')
+            # Write to CSV using the csv library
+            with open(cipher_file, 'w', newline='') as file:
+                writer = csv.writer(file)
+                
+                # Write the column names
+                writer.writerow(columns)
+                
+                # Write the data rows
+                writer.writerows(result)
+            
+            print(f"Data has been successfully written to {cipher_file}")
+            
+            # Verifying the written file
+            with open(cipher_file, 'r') as file:
+                written_content = file.read()
+                print("File content verification passed.")
+                # Optionally, you can print or log the content to verify:
+                # print(written_content)
 
-                # Write the data to the file
-                for row in result:
-                    file.write(','.join(map(str, row)) + '\n')
-
-            print(f"Data has been written to {file_path}")
         except mysql.connector.Error as err:
             print(f"Error: {err}")
+        except Exception as e:
+            print(f"Unexpected error: {e}")
         finally:
             cursor.close()
-
 
     def get_tables(self):
         cursor = self.connection.cursor()
@@ -111,7 +124,7 @@ class ProcessDB:
 
         server_ip = ui.ipInput.text()
         server_port = int(ui.portInput.text())
-        file_name = "public_key.pem"  # Fixed file name
+        file_name = "public_key.bin"  # Fixed file name
 
         client = Client(host=server_ip, port=server_port)
         client.connect_to_server('setup', None, config.selected_path, file_name)
@@ -161,9 +174,9 @@ class ProcessDB:
     def decrypt_data(self, parent):
         table = parent.ui.comboBox_table.currentText()
         public_key_path = parent.ui.pubTxb.text()
-        if not public_key_path.endswith('/public_key.pem'):
-            public_key_path += '/public_key.pem'
-        private_key_path = parent.ui.priTxb.text() + '/private_key.pem'
+        if not public_key_path.endswith('/public_key.bin'):
+            public_key_path += '/public_key.bin'
+        private_key_path = parent.ui.priTxb.text() + '/private_key.bin'
         recover_file = parent.ui.recoverTxb.text() + f'/key_{table}_aes.csv'
         ciphertext_file = parent.ui.cipTxb.text() + f'/{table}.csv'
         if not public_key_path or not recover_file or not private_key_path or not ciphertext_file:
