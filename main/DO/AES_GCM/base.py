@@ -85,7 +85,7 @@ def select_csv_file(database):
 
 def save_keys_to_file(keys, keyfile):
     with open(keyfile, 'w') as f:
-        f.write("columns, key\n")
+        f.write("columns,key\n")
         for column, key in keys.items():
             f.write(f"{column}, {key}\n")
             
@@ -107,7 +107,7 @@ def read_key_iv_from_file(key_iv_file):
         with open(key_iv_file, 'r') as f:
             next(f)  # Skip the header
             for line in f:
-                column, key_iv = line.strip().split(', ')
+                column, key_iv = line.strip().split(',')
                 key_iv_dict[column] = key_iv
         return key_iv_dict
 
@@ -116,7 +116,7 @@ def read_keys_from_file(keyfile):
     with open(keyfile, 'r') as f:
         next(f)  # Skip the header
         for line in f:
-            column, key = line.strip().split(', ')
+            column, key = line.strip().split(',')
             keys[column] = key
     return keys
 
@@ -125,7 +125,7 @@ def read_ivs_from_file(ivfile):
     with open(ivfile, 'r') as f:
         next(f)  # Skip the header
         for line in f:
-            column, iv = line.strip().split(', ')
+            column, iv = line.strip().split(',')
             ivs[column] = iv
     return ivs
 

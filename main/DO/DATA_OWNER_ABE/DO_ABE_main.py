@@ -14,7 +14,7 @@ class ABE_MainWindowApp(QtWidgets.QMainWindow):
         self.username = username
         # Connect the buttons to their respective functions
         self.ui.getPubPath.clicked.connect(lambda: self.handler.select_save_path(self, self.ui.pubPathTxb))
-        self.ui.getPubBtn.clicked.connect(lambda: self.handler.fetch_key(self, self.ui.pubPathTxb, "public_key.bin", "127.0.0.1", 10023))
+        self.ui.getPubBtn.clicked.connect(lambda: self.handler.fetch_key(self, self.ui.pubPathTxb, "public_key.bin", "192.168.1.4", 10023))
         self.ui.uploadPubBtn.clicked.connect(lambda: self.handler.select_save_path(self, self.ui.pubFileTxb, is_file=True))
         self.ui.uploadCipBtn.clicked.connect(lambda: self.handler.select_save_path(self, self.ui.cipTxb, is_file=True))
         self.ui.uploadPlaintBtn.clicked.connect(lambda: self.handler.select_save_path(self, self.ui.plaTxb, is_file=True))
