@@ -1,0 +1,5 @@
+openssl ecparam -genkey -name secp384r1 -out private_key.pem
+openssl req -new -sha384 -key private_key.pem -out cert.csr
+openssl x509 -req -in cert.csr -signkey private_key.pem -out ecc_cert.pem -days 365 -sha256
+
+sudo lsof -nP -iTCP:10023 | grep LISTEN
