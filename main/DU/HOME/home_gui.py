@@ -23,7 +23,7 @@ class Home_Ui_MainWindow(object):
         font.setWeight(75)
         self.btnAES.setFont(font)
         self.btnAES.setStyleSheet("background-color: rgb(53, 132, 228);\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(255, 255, 255); font-size: 16px; font-weight: bold;")
         self.btnAES.setObjectName("btnAES")
         self.btnABE = QtWidgets.QPushButton(parent=self.centralwidget)
         self.btnABE.setGeometry(QtCore.QRect(120, 110, 171, 51))
@@ -33,7 +33,7 @@ class Home_Ui_MainWindow(object):
         font.setWeight(75)
         self.btnABE.setFont(font)
         self.btnABE.setStyleSheet("background-color: rgb(53, 132, 228);\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(255, 255, 255); font-size: 16px; font-weight: bold;")
         self.btnABE.setObjectName("btnABE")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
         self.label.setGeometry(QtCore.QRect(240, 30, 131, 41))
