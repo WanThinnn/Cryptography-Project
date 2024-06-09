@@ -4,6 +4,14 @@ import sys
 import os
 import mysql.connector
 
+# Get the current script directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Navigate up one directory to the parent directory
+parent_dir = os.path.dirname(current_dir)
+
+# Thêm đường dẫn của thư mục cha vào sys.path
+sys.path.append(parent_dir)
+
 class Client:
     def __init__(self, host='127.0.0.1', port=10023):
         self.host = host
@@ -56,7 +64,8 @@ class Client:
     
     def connect_to_server(self, mode, username=None, save_path=None, file_name=None):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        context.load_verify_locations("/Users/wanthinnn/Documents/NT219/Cryptography-Project/main/DO/DATA_OWNER_ABE/localhost.crt")
+        certificate_path = os.path.join(parent_dir, "DATA_OWNER_ABE/localhost.crt")
+        context.load_verify_locations(certificate_path)
         context.check_hostname = False
         print("Connected to the server")
         try:

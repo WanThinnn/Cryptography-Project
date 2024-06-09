@@ -4,6 +4,14 @@ import sys
 import os
 import mysql.connector
 
+# Get the current script directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Navigate up one directory to the parent directory
+parent_dir = os.path.dirname(current_dir)
+
+# Thêm đường dẫn của thư mục cha vào sys.path
+sys.path.append(parent_dir)
+
 class Client:
     def __init__(self, host='127.0.0.1', port=10023):
         self.host = host
@@ -56,7 +64,9 @@ class Client:
     
     def connect_to_server(self, mode, username=None, save_path=None, file_name=None):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        context.load_verify_locations("/Users/wanthinnn/Documents/NT219/Cryptography-Project/main/DU/DATA_USER_ABE/localhost.crt")
+        certificate_path = os.path.join(parent_dir, "DATA_USER_ABE/localhost.crt")
+        print("path: " + certificate_path)
+        context.load_verify_locations(certificate_path)
         context.check_hostname = False
         print("Connected to the server")
         try:
@@ -90,6 +100,7 @@ class Client:
                     conn.close()
                     return  # Thoát vòng lặp khi thiếu thông tin
                 self.send_genkey_request(conn, username, save_path, file_name)
+            
             elif mode == 'get_pub_key':
                 if save_path is None or file_name is None:
                     print("Please provide save path and file name.")
@@ -140,3 +151,4 @@ if __name__ == "__main__":
             print("Usage: python3 client.py <server_ip> <server_port> get_pub_key <path_to_save> <file_name>")
             sys.exit(1)
         client.connect_to_server(mode, None, sys.argv[4], sys.argv[5])
+

@@ -19,9 +19,20 @@
      <rect>
       <x>300</x>
       <y>110</y>
-      <width>131</width>
+      <width>171</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(53, 132, 228);
+color: rgb(0, 0, 0);</string>
     </property>
     <property name="text">
      <string>AES Decryption</string>
@@ -30,11 +41,22 @@
    <widget class="QPushButton" name="btnABE">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>120</x>
       <y>110</y>
-      <width>141</width>
+      <width>171</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(53, 132, 228);
+color: rgb(0, 0, 0);</string>
     </property>
     <property name="text">
      <string>CP-ABE Decryption</string>
@@ -43,9 +65,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>50</y>
-      <width>91</width>
+      <x>240</x>
+      <y>30</y>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>
@@ -65,7 +87,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>191</width>
+      <width>301</width>
       <height>16</height>
      </rect>
     </property>
@@ -87,7 +109,7 @@
      <x>0</x>
      <y>0</y>
      <width>602</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

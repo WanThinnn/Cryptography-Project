@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'uploadFile.ui'
+# Form implementation generated from reading ui file 'DO_ABE_GUI.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.2
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(905, 600)
+        MainWindow.resize(732, 426)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pubPathTxb = QtWidgets.QTextBrowser(parent=self.centralwidget)
@@ -43,12 +43,12 @@ class Ui_MainWindow(object):
         self.getPubPath.setStyleSheet("background-color: rgb(153, 193, 241);")
         self.getPubPath.setObjectName("getPubPath")
         self.getPubBtn = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.getPubBtn.setGeometry(QtCore.QRect(70, 300, 131, 41))
+        self.getPubBtn.setGeometry(QtCore.QRect(210, 310, 131, 41))
         self.getPubBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
 "    background-color: rgb(26, 95, 180);")
         self.getPubBtn.setObjectName("getPubBtn")
         self.encryptBtn = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.encryptBtn.setGeometry(QtCore.QRect(220, 300, 131, 41))
+        self.encryptBtn.setGeometry(QtCore.QRect(360, 310, 131, 41))
         self.encryptBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
 "    background-color: rgb(26, 95, 180);")
         self.encryptBtn.setObjectName("encryptBtn")
@@ -64,21 +64,6 @@ class Ui_MainWindow(object):
         self.uploadPlaintBtn.setGeometry(QtCore.QRect(560, 200, 91, 31))
         self.uploadPlaintBtn.setStyleSheet("background-color: rgb(153, 193, 241);")
         self.uploadPlaintBtn.setObjectName("uploadPlaintBtn")
-        self.connectBtn = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.connectBtn.setGeometry(QtCore.QRect(540, 20, 111, 41))
-        self.connectBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(34, 139, 34);")
-        self.connectBtn.setObjectName("connectBtn")
-        self.disconnectBtn = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.disconnectBtn.setGeometry(QtCore.QRect(520, 300, 131, 41))
-        self.disconnectBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
-"    background-color: rgb(178, 34, 34);")
-        self.disconnectBtn.setObjectName("disconnectBtn")
-        self.decryptBtn = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.decryptBtn.setGeometry(QtCore.QRect(370, 300, 131, 41))
-        self.decryptBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
-"    background-color: rgb(26, 95, 180);")
-        self.decryptBtn.setObjectName("decryptBtn")
         self.label_5 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(10, 150, 131, 31))
         self.label_5.setObjectName("label_5")
@@ -87,7 +72,7 @@ class Ui_MainWindow(object):
         self.pubFileTxb.setObjectName("pubFileTxb")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 732, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
@@ -110,17 +95,4 @@ class Ui_MainWindow(object):
         self.uploadPubBtn.setText(_translate("MainWindow", "Upload"))
         self.uploadCipBtn.setText(_translate("MainWindow", "Select path"))
         self.uploadPlaintBtn.setText(_translate("MainWindow", "Upload"))
-        self.connectBtn.setText(_translate("MainWindow", "Connect Server"))
-        self.disconnectBtn.setText(_translate("MainWindow", "Disconnect"))
-        self.decryptBtn.setText(_translate("MainWindow", "Decrypt"))
         self.label_5.setText(_translate("MainWindow", "Public_key file"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
