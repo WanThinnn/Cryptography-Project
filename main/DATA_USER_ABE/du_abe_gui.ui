@@ -23,6 +23,10 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
+    </property>
     <property name="text">
      <string>Home</string>
     </property>
@@ -30,11 +34,15 @@
    <widget class="QPushButton" name="getPriBtn">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>170</y>
+      <x>530</x>
+      <y>230</y>
       <width>131</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Get Private Key</string>
@@ -56,11 +64,15 @@
    <widget class="QPushButton" name="getCipBtn">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>220</y>
+      <x>530</x>
+      <y>280</y>
       <width>131</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Get Cipher Text</string>
@@ -82,11 +94,15 @@
    <widget class="QPushButton" name="getPubBtn">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>120</y>
+      <x>530</x>
+      <y>130</y>
       <width>131</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Get Public Key</string>
@@ -121,11 +137,14 @@
    <widget class="QPushButton" name="getPubPath">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>120</y>
-      <width>81</width>
-      <height>51</height>
+      <x>430</x>
+      <y>130</y>
+      <width>71</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose</string>
@@ -134,11 +153,14 @@
    <widget class="QPushButton" name="getPriPath">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>170</y>
-      <width>81</width>
-      <height>51</height>
+      <x>430</x>
+      <y>180</y>
+      <width>71</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose</string>
@@ -147,11 +169,14 @@
    <widget class="QPushButton" name="getCipPath">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>220</y>
-      <width>81</width>
-      <height>51</height>
+      <x>430</x>
+      <y>230</y>
+      <width>71</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose</string>
@@ -160,11 +185,14 @@
    <widget class="QPushButton" name="getRecPath">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>270</y>
-      <width>81</width>
-      <height>51</height>
+      <x>430</x>
+      <y>280</y>
+      <width>71</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose</string>
@@ -174,20 +202,24 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>64</y>
+      <y>60</y>
       <width>411</width>
-      <height>41</height>
+      <height>51</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="decryptBtn">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>340</y>
+      <x>340</x>
+      <y>350</y>
       <width>161</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Decrypt</string>
@@ -196,11 +228,14 @@
    <widget class="QPushButton" name="getTableBtn">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>570</x>
       <y>60</y>
       <width>101</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose</string>
@@ -209,11 +244,14 @@
    <widget class="QPushButton" name="getPubBtn_2">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>120</y>
-      <width>141</width>
-      <height>51</height>
+      <x>530</x>
+      <y>180</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Choose Public Key</string>
@@ -266,7 +304,7 @@
      <x>0</x>
      <y>0</y>
      <width>815</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

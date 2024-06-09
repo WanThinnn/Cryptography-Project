@@ -32,13 +32,17 @@ class Ui_LoginWindow(object):
         self.lineEdit_password.setObjectName("lineEdit_password")
         self.pushButton_login = QtWidgets.QPushButton(parent=self.centralwidget)
         self.pushButton_login.setGeometry(QtCore.QRect(150, 150, 100, 31))
+        self.pushButton_login.setStyleSheet("color: rgb(255, 255, 255);\n"
+"    background-color: rgb(26, 95, 180);")
         self.pushButton_login.setObjectName("pushButton_login")
         self.pushButton_signup = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.pushButton_signup.setGeometry(QtCore.QRect(150, 180, 100, 30))
+        self.pushButton_signup.setGeometry(QtCore.QRect(150, 210, 100, 30))
+        self.pushButton_signup.setStyleSheet("color: rgb(255, 255, 255);\n"
+"    background-color: rgb(26, 95, 180);")
         self.pushButton_signup.setObjectName("pushButton_signup")
         LoginWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=LoginWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 22))
         self.menubar.setObjectName("menubar")
         LoginWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=LoginWindow)
@@ -55,3 +59,13 @@ class Ui_LoginWindow(object):
         self.label_password.setText(_translate("LoginWindow", "Password:"))
         self.pushButton_login.setText(_translate("LoginWindow", "Login"))
         self.pushButton_signup.setText(_translate("LoginWindow", "Sign Up"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    LoginWindow = QtWidgets.QMainWindow()
+    ui = Ui_LoginWindow()
+    ui.setupUi(LoginWindow)
+    LoginWindow.show()
+    sys.exit(app.exec())

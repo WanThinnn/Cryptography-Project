@@ -56,6 +56,10 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(26, 95, 180);</string>
+    </property>
     <property name="text">
      <string>Home</string>
     </property>
@@ -99,11 +103,14 @@
    <widget class="QPushButton" name="getPubPath">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>560</x>
       <y>100</y>
-      <width>51</width>
+      <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Get</string>
@@ -112,11 +119,15 @@
    <widget class="QPushButton" name="getPubBtn">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>100</y>
-      <width>121</width>
-      <height>31</height>
+      <x>70</x>
+      <y>300</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Get Public Key</string>
@@ -125,11 +136,15 @@
    <widget class="QPushButton" name="encryptBtn">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>220</x>
       <y>300</y>
       <width>131</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Encypt</string>
@@ -138,11 +153,14 @@
    <widget class="QPushButton" name="uploadPubBtn">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>560</x>
       <y>150</y>
-      <width>131</width>
+      <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Upload</string>
@@ -151,11 +169,14 @@
    <widget class="QPushButton" name="uploadCipBtn">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>560</x>
       <y>250</y>
-      <width>131</width>
+      <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Select path</string>
@@ -164,11 +185,14 @@
    <widget class="QPushButton" name="uploadPlaintBtn">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>560</x>
       <y>200</y>
-      <width>131</width>
+      <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(153, 193, 241);</string>
     </property>
     <property name="text">
      <string>Upload</string>
@@ -177,11 +201,15 @@
    <widget class="QPushButton" name="connectBtn">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>10</y>
+      <x>540</x>
+      <y>20</y>
       <width>111</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(34, 139, 34);</string>
     </property>
     <property name="text">
      <string>Connect Server</string>
@@ -190,11 +218,15 @@
    <widget class="QPushButton" name="disconnectBtn">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>520</x>
       <y>300</y>
       <width>131</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(178, 34, 34);</string>
     </property>
     <property name="text">
      <string>Disconnect</string>
@@ -203,11 +235,15 @@
    <widget class="QPushButton" name="decryptBtn">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>370</x>
       <y>300</y>
       <width>131</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+	background-color: rgb(26, 95, 180);</string>
     </property>
     <property name="text">
      <string>Decrypt</string>

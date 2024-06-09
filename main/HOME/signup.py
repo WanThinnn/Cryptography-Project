@@ -30,6 +30,8 @@ class Ui_SignupWindow(object):
         self.lineEdit_password.setObjectName("lineEdit_password")
         self.pushButton_signup = QtWidgets.QPushButton(parent=self.centralwidget)
         self.pushButton_signup.setGeometry(QtCore.QRect(150, 200, 100, 41))
+        self.pushButton_signup.setStyleSheet("color: rgb(255, 255, 255);\n"
+"    background-color: rgb(26, 95, 180);")
         self.pushButton_signup.setObjectName("pushButton_signup")
         self.lineEdit_password_2 = QtWidgets.QLineEdit(parent=self.centralwidget)
         self.lineEdit_password_2.setGeometry(QtCore.QRect(150, 150, 200, 25))
@@ -40,7 +42,7 @@ class Ui_SignupWindow(object):
         self.label_password_2.setObjectName("label_password_2")
         SignupWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=SignupWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 22))
         self.menubar.setObjectName("menubar")
         SignupWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=SignupWindow)
@@ -57,3 +59,13 @@ class Ui_SignupWindow(object):
         self.label_password.setText(_translate("SignupWindow", "Password:"))
         self.pushButton_signup.setText(_translate("SignupWindow", "Signup"))
         self.label_password_2.setText(_translate("SignupWindow", "Repeat Password:"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    SignupWindow = QtWidgets.QMainWindow()
+    ui = Ui_SignupWindow()
+    ui.setupUi(SignupWindow)
+    SignupWindow.show()
+    sys.exit(app.exec())
