@@ -79,6 +79,7 @@ class LoginWindow(QMainWindow):
     def open_main_form(self, username):
         self.home_window = HomeWindows(username)
         self.home_window.show()
+        self.hide()
         
     def login(self):
         username = self.ui.lineEdit_username.text()
