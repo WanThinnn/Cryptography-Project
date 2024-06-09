@@ -123,7 +123,7 @@ class ProcessDB:
             ui.cipTxb.setText(path)
             QtWidgets.QMessageBox.information(self, 'Thông báo', f'Đường dẫn đã chọn: {path}')
             
-    def fetch_private_key(self, ui, lineedit, file_name):
+    def fetch_private_key(self, ui, username, lineedit, file_name):
         save_path = lineedit.text()
         if not save_path:
             # Debugging print to check the type and value of ui.centralwidget
@@ -133,11 +133,11 @@ class ProcessDB:
             QtWidgets.QMessageBox.warning(ui.centralwidget, 'Cảnh báo', 'Vui lòng chọn đường dẫn lưu trữ trước!')
             return
 
-        server_ip = "127.0.0.1"
+        server_ip = "192.168.1.4"
         server_port = 10023
 
         client = Client(host=server_ip, port=server_port)
-        client.connect_to_server('genkey', 'admin', save_path, file_name)
+        client.connect_to_server('genkey', username=username, save_path=save_path, file_name=file_name)
         QtWidgets.QMessageBox.information(ui.centralwidget, 'Thông báo', f'{file_name} đã được lưu tại {save_path}!')
 
     def fetch_public_key(self, ui, lineedit, file_name):
@@ -150,7 +150,7 @@ class ProcessDB:
             QtWidgets.QMessageBox.warning(ui.centralwidget, 'Cảnh báo', 'Vui lòng chọn đường dẫn lưu trữ trước!')
             return
 
-        server_ip = "127.0.0.1"
+        server_ip = "192.168.1.4"
         server_port = 10023
 
         client = Client(host=server_ip, port=server_port)
