@@ -47,7 +47,7 @@ def gen_secret_key(cpabe, public_key_file, master_key_file, attributes, private_
     serialized_private_key = objectToBytes(private_key, cpabe.groupObj)
     save_to_file(serialized_private_key, private_key_file)
     
-    print(f"Secret Key generated and saved to {private_key_file}")
+    # print(f"Secret Key generated and saved to {private_key_file}")
 
     
 def encrypt_message(cpabe, public_key_file, plaintext_file, ciphertext):
