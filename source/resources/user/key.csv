@@ -1,0 +1,11 @@
+columns,key,policy
+id,V7dPdvotiv6SknMOMZws5/8eA8RAXKYYS03e5gfkpNQ=,(A AND B) OR (A AND C) OR D
+name,XcgjJ7LOxwkG+o0kESej7p1B0XkQvbQbsd9o2GXUPeM=,(A AND B)
+sex,cThWRZ0YAgnhc4JOoYt4l9nZIABcqJYGyTm0pC9zp28=,(A AND B) OR (A AND C) OR D
+phone,4KmpGAVSnUcd5wYXIGVOPgjU79ADfz3ZV34o4hwwhxs=,(A AND B)
+address,EqQPp0gPazIkh5/4p//jnMluQ7ixvn3C2xFEhPJdOVQ=,A
+birthday,K6TtuSwZ2WSe1IBwBEFmwyHpIyJ1Apzobxre8o5pvFE=,D
+date_join,IVnKZ1hGCsClJBFQg+odTYUvVlpWoZdSoObuNJaFxdU=,(A AND C) OR D
+position,Ut84qUpHacFEKAyoruVKWcdqjBPYtvowei74vmYBy8o=,(D AND C) OR A
+email,IhjqYyaO3K+eCXho2diCFIjl/uqB3zSzBhs81VUrhW4=,(A AND B AND C AND D) OR A
+password,3fkwcbFhWYeVTsqI59ntQomr2Nh/cmHXA5IhoC/pkBY=,(A AND B) OR (A AND C) OR D
