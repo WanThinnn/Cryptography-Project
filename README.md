@@ -1,9 +1,9 @@
 # Cryptography-Project
 
-Confidentiality and Access Control in Amazon RDS MySQL
+**Project: Confidentiality and Access Control in Amazon RDS MySQL**
+
 
 ## Description
-
 
 This project aims to use encryption algorithms to encrypt SQL databases.
 
@@ -16,12 +16,12 @@ Next, we will set permissions for data users through ABAC based on the policies 
 Finally, upload the encrypted data to Amazon RDS MySQL for storage.
 
 Data users who want to query must go through 4 layers:
-+ Bcrypt: used to authenticate passwords
-+ ABAC: used to authenticate that user's attributes
-+ CP-ABE: receive public key and secret key based on that user's attributes. Use these two keys to decrypt the encrypted 256-bit AES key. (Depending on the user's attributes and the encryption policy provided previously, CP-ABE will decrypt that key and the user will receive the AES key according to his attributes)
-+ AES-GCM: after passing the above layers, users can decode the data and download it to view.
++ **Bcrypt**: used to authenticate passwords
++ **ABAC**: used to authenticate that user's attributes
++ **CP-ABE**: receive public key and secret key based on that user's attributes. Use these two keys to decrypt the encrypted 256-bit AES key. (Depending on the user's attributes and the encryption policy provided previously, CP-ABE will decrypt that key and the user will receive the AES key according to his attributes)
++ **AES-GCM**: after passing the above layers, users can decode the data and download it to view.
 
-To be more intuitive, we use the PyQT6 library to create a simple interface.
+To be more intuitive, we use the **PyQT6** library to create a simple interface.
 
 Currently, the project has only developed the ability to query encrypted data through csv files. In the future we will try to develop more missing features such as: querying that encrypted data in real time,...
 
