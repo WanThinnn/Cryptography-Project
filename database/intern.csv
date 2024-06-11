@@ -1,0 +1,51 @@
+﻿id,name,gender,phone_number,day_of_birth,email,University
+SV001,Emily Johnson,Female,'0692365925,FALSE,emilyjohnson114@gmail.com,University of Economics Ho Chi Minh City
+SV002,Michael Smith,Male,'0622045782,10/11/2000,michaelsmith608@gmail.com,Ho Chi Minh City University of Technology
+SV003,Olivia Brown,Male,'0831445031,11/10/2002,oliviabrown292@gmail.com,Ho Chi Minh City University of Social Sciences and Humanities
+SV004,Ethan Williams,Female,'0621331223,6/24/2002,ethanwilliams920@gmail.com,International University - Ho Chi Minh City
+SV005,Ava Jones,Male,'0389317268,5/7/2000,avajones966@gmail.com,Ho Chi Minh City University of Foreign Languages and Information Technology
+SV006,William Miller,Female,'0770145673,8/13/2001,williammiller895@gmail.com,Ho Chi Minh City University of Transport
+SV007,Sophia Davis,Male,'0433903015,8/27/2001,sophiadavis278@gmail.com,Ho Chi Minh City University of Agriculture and Forestry
+SV008,James Wilson,Male,'0570731140,10/16/2001,jameswilson667@gmail.com,Ho Chi Minh City University of Law
+SV009,Isabella Moore,Female,'0726723618,3/7/2002,isabellamoore923@gmail.com,Ho Chi Minh City University of Industry
+SV010,Benjamin Taylor,Male,'0554991101,8/16/2001,benjamintaylor116@gmail.com,Ho Chi Minh City University of Architecture
+SV011,Charlotte Anderson,Male,'0564619981,12/23/2002,charlotteanderson225@gmail.com,Ho Chi Minh City University of Medicine and Pharmacy
+SV012,Lucas Thomas,Female,'0715926430,12/16/2000,lucasthomas321@gmail.com,Ho Chi Minh City University of Pedagogy
+SV013,Amelia Jackson,Male,'0512165096,10/6/2002,ameliajackson598@gmail.com,Ho Chi Minh City University of Fine Arts
+SV014,Henry White,Female,'0282193867,11/28/2001,henrywhite182@gmail.com,Ho Chi Minh City University of Sport
+SV015,Mia Harris,Female,'0122263819,12/21/2001,miaharris969@gmail.com,Ho Chi Minh City University of Science
+SV016,Alexander Martin,Male,'0641448774,2/28/2001,alexandermartin400@gmail.com,Ho Chi Minh City University of Education
+SV017,Harper Thompson,Female,'0636124909,3/18/2000,harperthompson380@gmail.com,University of Economics and Finance - Ho Chi Minh City
+SV018,Daniel Garcia,Female,'0340771933,9/2/2001,danielgarcia911@gmail.com,University of Technology and Management - Ho Chi Minh City
+SV019,Evelyn Martinez,Female,'0238611992,7/21/2000,evelynmartinez542@gmail.com,University of Information Technology - Ho Chi Minh City
+SV020,Jackson Robinson,Male,'0947679597,12/22/2001,jacksonrobinson538@gmail.com,University of Banking - Ho Chi Minh City
+SV021,Abigail Clark,Male,'0844092942,7/11/2001,abigailclark136@gmail.com,University of Economics Ho Chi Minh City
+SV022,Logan Lewis,Female,'0189765583,3/19/2001,loganlewis696@gmail.com,Ho Chi Minh City University of Technology
+SV023,Madison Lee,Female,'0833708081,9/21/2002,madisonlee535@gmail.com,Ho Chi Minh City University of Social Sciences and Humanities
+SV024,Samuel Walker,Female,'0988651243,11/19/2001,samuelwalker136@gmail.com,International University - Ho Chi Minh City
+SV025,Ella Hall,Male,'0280887774,9/25/2000,ellahall781@gmail.com,Ho Chi Minh City University of Foreign Languages and Information Technology
+SV026,Matthew Young,Female,'0927264436,5/19/2000,matthewyoung556@gmail.com,Ho Chi Minh City University of Transport
+SV027,Grace Allen,Male,'0240772932,4/12/2001,graceallen723@gmail.com,Ho Chi Minh City University of Agriculture and Forestry
+SV028,David King,Female,'0295331403,8/13/2000,davidking844@gmail.com,Ho Chi Minh City University of Law
+SV029,Scarlett Wright,Male,'0265982590,12/21/2000,scarlettwright191@gmail.com,Ho Chi Minh City University of Industry
+SV030,Joseph Scott,Male,'0270914890,5/5/2000,josephscott654@gmail.com,Ho Chi Minh City University of Architecture
+SV031,Lily Green,Female,'0246059411,12/2/2001,lilygreen153@gmail.com,Ho Chi Minh City University of Medicine and Pharmacy
+SV032,Andrew Adams,Male,'0449745462,8/21/2000,andrewadams479@gmail.com,Ho Chi Minh City University of Pedagogy
+SV033,Chloe Baker,Female,'0419390839,5/14/2001,chloebaker171@gmail.com,Ho Chi Minh City University of Fine Arts
+SV034,Joshua Nelson,Male,'0504948358,11/5/2002,joshuanelson936@gmail.com,Ho Chi Minh City University of Sport
+SV035,Zoey Hill,Male,'0765524895,3/24/2002,zoeyhill414@gmail.com,Ho Chi Minh City University of Science
+SV036,Christopher Carter,Male,'0245306707,12/1/2000,christophercarter732@gmail.com,Ho Chi Minh City University of Education
+SV037,Lily Rivera,Male,'0490245760,12/10/2002,lilyrivera965@gmail.com,University of Economics and Finance - Ho Chi Minh City
+SV038,Nathan Phillips,Female,'0663191837,7/21/2001,nathanphillips236@gmail.com,University of Technology and Management - Ho Chi Minh City
+SV039,Hannah Campbell,Male,'0690882895,12/25/2001,hannahcampbell172@gmail.com,University of Information Technology - Ho Chi Minh City
+SV040,Ryan Mitchell,Male,'0356370587,9/17/2002,ryanmitchell142@gmail.com,University of Banking - Ho Chi Minh City
+SV041,Aria Perez,Female,'0598782022,8/12/2002,ariaperez200@gmail.com,University of Economics Ho Chi Minh City
+SV042,Dylan Roberts,Female,'0794209876,7/21/2000,dylanroberts638@gmail.com,Ho Chi Minh City University of Technology
+SV043,Zoe Turner,Male,'0667671835,11/20/2000,zoeturner138@gmail.com,Ho Chi Minh City University of Social Sciences and Humanities
+SV044,Caleb Parker,Female,'0429319921,2/24/2000,calebparker499@gmail.com,International University - Ho Chi Minh City
+SV045,Riley Evans,Male,'0976789887,10/2/2000,rileyevans896@gmail.com,Ho Chi Minh City University of Foreign Languages and Information Technology
+SV046,Luke Edwards,Female,'0609201911,11/19/2000,lukeedwards754@gmail.com,Ho Chi Minh City University of Transport
+SV047,Nora Collins,Male,'0683084187,3/10/2002,noracollins863@gmail.com,Ho Chi Minh City University of Agriculture and Forestry
+SV048,Julian Stewart,Female,'0494423557,1/12/2002,julianstewart323@gmail.com,Ho Chi Minh City University of Law
+SV049,Ellie Sanchez,Female,'0641436737,3/14/2002,elliesanchez168@gmail.com,Ho Chi Minh City University of Industry
+SV050,Jessica Lathin,Female,'0597812990,12/14/2001,jessicalathin251@gmail.com,Ho Chi Minh City University of Architecture

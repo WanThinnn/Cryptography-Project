@@ -1,0 +1,51 @@
+﻿id,name,tax,price,ImageURL,release_date
+SP001,Midnight Sparkle Perfume,5,1952000,https://image/midnightsparkleperfume,7/27/2024
+SP002,Tranquil Oasis Candle,9,1059000,https://image/tranquiloasiscandle,3/9/2023
+SP003,Mountain Breeze Body Wash,7,1372000,https://image/mountainbreezebodywash,5/11/2023
+SP004,Golden Sunset Lipstick,9,1470000,https://image/goldensunsetlipstick,12/3/2023
+SP005,Enchanted Forest Eye Shadow Palette,9,1459000,https://image/enchantedforesteyeshadowpalette,11/5/2023
+SP006,Ocean Mist Shampoo,7,411000,https://image/oceanmistshampoo,10/25/2024
+SP007,Summer Glow Bronzer,5,1352000,https://image/summerglowbronzer,12/13/2023
+SP008,Blossom Bloom Hair Conditioner,7,1771000,https://image/blossombloomhairconditioner,4/16/2024
+SP009,Urban Edge Cologne,8,862000,https://image/urbanedgecologne,6/24/2023
+SP010,Desert Mirage Nail Polish,10,1662000,https://image/desertmiragenailpolish,8/23/2024
+SP011,Velvet Nights Body Lotion,6,880000,https://image/velvetnightsbodylotion,8/7/2023
+SP012,Arctic Frost Facial Cleanser,7,1403000,https://image/arcticfrostfacialcleanser,6/1/2023
+SP013,Firefly Glow Highlighter,7,1290000,https://image/fireflyglowhighlighter,9/23/2023
+SP014,Secret Garden Hand Cream,7,836000,https://image/secretgardenhandcream,7/23/2024
+SP015,Crystal Waters Bath Bombs,8,1149000,https://image/crystalwatersbathbombs,7/12/2024
+SP016,Moonlit Serenade Face Mask,5,1664000,https://image/moonlitserenadefacemask,2/25/2023
+SP017,Starlight Whispers Lip Balm,9,1041000,https://image/starlightwhisperslipbalm,10/1/2023
+SP018,Fresh Raindrop Body Scrub,7,813000,https://image/freshraindropbodyscrub,2/15/2024
+SP019,Emerald Oasis Body Mist,9,1182000,https://image/emeraldoasisbodymist,2/17/2024
+SP020,Sun-Kissed Sands Body Oil,9,841000,https://image/sun-kissedsandsbodyoil,12/18/2024
+SP021,Sparkling Twilight Hair Serum,6,853000,https://image/sparklingtwilighthairserum,4/20/2024
+SP022,Velvet Dream Perfume,5,854000,https://image/velvetdreamperfume,7/4/2023
+SP023,Celestial Starburst Mascara,10,217000,https://image/celestialstarburstmascara,6/12/2023
+SP024,Whispering Woods Body Butter,7,1400000,https://image/whisperingwoodsbodybutter,8/18/2024
+SP025,Sunset Horizon Eyeliner,5,1441000,https://image/sunsethorizoneyeliner,10/6/2023
+SP026,Enigma Elixir Cologne,6,1626000,https://image/enigmaelixircologne,6/20/2023
+SP027,Diamond Dust Nail Lacquer,5,1377000,https://image/diamonddustnaillacquer,3/11/2023
+SP028,Lavender Fields Body Spray,5,253000,https://image/lavenderfieldsbodyspray,9/25/2024
+SP029,Crimson Rose Lip Gloss,10,1298000,https://image/crimsonroselipgloss,6/4/2023
+SP030,Midnight Mirage Facial Toner,8,1678000,https://image/midnightmiragefacialtoner,9/18/2023
+SP031,Aqua Marine Face Cream,9,768000,https://image/aquamarinefacecream,2/6/2023
+SP032,Sunset Beach Lip Stain,8,1420000,https://image/sunsetbeachlipstain,8/28/2023
+SP033,Enchanted Sky Eye Cream,8,1424000,https://image/enchantedskyeyecream,3/25/2023
+SP034,Twilight Embrace Facial Serum,7,1213000,https://image/twilightembracefacialserum,6/27/2023
+SP035,Golden Honey Hair Mask,9,1566000,https://image/goldenhoneyhairmask,8/22/2023
+SP036,Moonlit Meadow Shaving Cream,8,1962000,https://image/moonlitmeadowshavingcream,10/3/2023
+SP037,Misty Morning Bath Salts,5,308000,https://image/mistymorningbathsalts,6/21/2023
+SP038,Ruby Red Lip Liner,6,568000,https://image/rubyredlipliner,4/17/2023
+SP039,Opal Glow Body Powder,10,1925000,https://image/opalglowbodypowder,10/20/2024
+SP040,Midnight Orchid Perfume Oil,5,189000,https://image/midnightorchidperfumeoil,12/28/2023
+SP041,Whispering Willow Hand Soap,6,1435000,https://image/whisperingwillowhandsoap,5/11/2023
+SP042,Mystic River Body Wash,10,1347000,https://image/mysticriverbodywash,12/10/2023
+SP043,Pearl Essence Face Primer,7,644000,https://image/pearlessencefaceprimer,8/12/2023
+SP044,Sunbeam Sparkle Nail Art Kit,5,1509000,https://image/sunbeamsparklenailartkit,12/15/2024
+SP045,Mystic Moonstone Makeup Remover,8,1932000,https://image/mysticmoonstonemakeupremover,12/7/2024
+SP046,Crystal Clear Lip Scrub,6,207000,https://image/crystalclearlipscrub,5/21/2024
+SP047,Twilight Whispers Hair Gel,8,814000,https://image/twilightwhispershairgel,8/1/2023
+SP048,Midnight Magic Hair Spray,9,1833000,https://image/midnightmagichairspray,5/27/2023
+SP049,Gilded Lily Face Mist,5,1012000,https://image/gildedlilyfacemist,9/16/2023
+SP050,Whispering Sands Setting Powder,9,1270000,https://image/whisperingsandssettingpowder,9/23/2023
