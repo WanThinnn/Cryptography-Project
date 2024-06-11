@@ -97,6 +97,7 @@ for row in mycursor.fetchall():
 ### Connecting to MongoDB
 ```bash
 cd /Cryptography-Project/main/Data_User/ABAC
+cd /Cryptography-Project/main/Data_Owner/ABAC
 ```
 
 * Configure your MongoDB Connection in <b>config.py</b> file
