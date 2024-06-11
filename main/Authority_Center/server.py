@@ -6,7 +6,7 @@ import sys
 import os
 
 class Server:
-    def __init__(self, host='192.168.1.4', port=10023, certfile=None, keyfile=None):
+    def __init__(self, host='127.0.0.1', port=10023, certfile=None, keyfile=None):
         self.host = host
         self.port = port
         self.certfile = certfile
@@ -26,10 +26,12 @@ class Server:
         try:
             mode, attributes = msg.split('|', 1)  # Chỉ tách lần đầu tiên tìm thấy '|'
             print(f"Mode: {mode}, Attributes: {attributes}")
-
+            send_attributes = attributes.upper()
+            print(f"Attributes upper: {send_attributes}")
+            
             if mode == 'genkey':
                 # Tạo khóa bí mật
-                gen_secret_key(self.cpabe, public_key_file, master_key_file, attributes, private_key_file_path)
+                gen_secret_key(self.cpabe, public_key_file, master_key_file, send_attributes, private_key_file_path)
                 
                 # Đọc nội dung của file khóa bí mật
                 with open(private_key_file_path, 'rb') as private_key_file:
@@ -100,5 +102,5 @@ class Server:
         self.TAsetup(path)
 
 if __name__ == "__main__":
-    server = Server(certfile='ecc_cert.pem', keyfile='private_key.pem')
+    server = Server(certfile='localhost.crt', keyfile='localhost.key')
     server.start()

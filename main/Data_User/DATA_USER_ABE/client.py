@@ -13,7 +13,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 class Client:
-    def __init__(self, host='192.168.1.4', port=10023):
+    def __init__(self, host='127.0.0.1', port=10023):
         self.host = host
         self.port = port
 
@@ -64,7 +64,7 @@ class Client:
     
     def connect_to_server(self, mode, username=None, save_path=None, file_name=None):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        certificate_path = os.path.join(parent_dir, "DATA_USER_ABE/ecc_cert.pem")
+        certificate_path = os.path.join(parent_dir, "DATA_USER_ABE/localhost.crt")
         print("path: " + certificate_path)
         context.load_verify_locations(certificate_path)
         context.check_hostname = False

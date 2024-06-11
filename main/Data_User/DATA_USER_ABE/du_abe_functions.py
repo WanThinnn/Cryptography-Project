@@ -137,7 +137,7 @@ class ProcessDB:
             ui.cipTxb.setText(path)
             QtWidgets.QMessageBox.information(self, 'Thông báo', f'Đường dẫn đã chọn: {path}')
             
-    def fetch_private_key(self, ui, username, lineedit, file_name):
+    def fetch_private_key(self, ui, username, lineedit, file_name, Server_ip, Server_port):
         save_path = lineedit.text()
         if not save_path:
             # Debugging print to check the type and value of ui.centralwidget
@@ -147,14 +147,12 @@ class ProcessDB:
             QtWidgets.QMessageBox.warning(ui.centralwidget, 'Cảnh báo', 'Vui lòng chọn đường dẫn lưu trữ trước!')
             return
 
-        server_ip = "192.168.1.4"
-        server_port = 10023
 
-        client = Client(host=server_ip, port=server_port)
+        client = Client(host=Server_ip, port=Server_port)
         client.connect_to_server('genkey', username=username, save_path=save_path, file_name=file_name)
         QtWidgets.QMessageBox.information(ui.centralwidget, 'Thông báo', f'{file_name} đã được lưu tại {save_path}!')
 
-    def fetch_public_key(self, ui, lineedit, file_name):
+    def fetch_public_key(self, ui, lineedit, file_name, Server_ip, Server_port):
         save_path = lineedit.text()
         if not save_path:
             # Debugging print to check the type and value of ui.centralwidget
@@ -164,10 +162,7 @@ class ProcessDB:
             QtWidgets.QMessageBox.warning(ui.centralwidget, 'Cảnh báo', 'Vui lòng chọn đường dẫn lưu trữ trước!')
             return
 
-        server_ip = "192.168.1.4"
-        server_port = 10023
-
-        client = Client(host=server_ip, port=server_port)
+        client = Client(host=Server_ip, port=Server_port)
         client.connect_to_server('get_pub_key', None, save_path, file_name)
         QtWidgets.QMessageBox.information(ui.centralwidget, 'Thông báo', f'{file_name} đã được lưu tại {save_path}!')
     
@@ -177,19 +172,16 @@ class ProcessDB:
         if not public_key_path.endswith('/public_key.bin'):
             public_key_path += '/public_key.bin'
         private_key_path = parent.ui.priTxb.text() + '/private_key.bin'
-        recover_file = parent.ui.recoverTxb.text() + f'/key_{table}_aes.csv'
+        recover_file = parent.ui.recoverTxb.text() + f'/{table}_aes.csv'
         ciphertext_file = parent.ui.cipTxb.text() + f'/{table}.csv'
         if not public_key_path or not recover_file or not private_key_path or not ciphertext_file:
             QMessageBox.warning(parent, "Warning", "Please ensure all paths are selected.")
             return
 
-        try:
-            print(f"Starting encryption with public_key_path: {public_key_path}, plaintext_path: {recover_file}")
 
-            cpabe = CPABE("AC17")
-            decrypt_message(cpabe, public_key_path, private_key_path, ciphertext_file, recover_file)
-            QMessageBox.information(parent, "Success", "Data Decrypted and saved successfully.")
+        print(f"Starting decryption with private_key_path: {private_key_path}, recover_path: {recover_file}")
 
-        except Exception as e:
-            QMessageBox.critical(parent, "Error", f"Decryption failed: {str(e)}")
-            print(f"Encryption failed: {str(e)}")
+        cpabe = CPABE("AC17")
+        decrypt_message(cpabe, public_key_path, private_key_path, ciphertext_file, recover_file)
+        QMessageBox.information(parent, "Success", "Data Decrypted and saved successfully.")
+

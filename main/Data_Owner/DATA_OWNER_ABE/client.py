@@ -64,7 +64,7 @@ class Client:
     
     def connect_to_server(self, mode, username=None, save_path=None, file_name=None):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        certificate_path = os.path.join(parent_dir, "DATA_OWNER_ABE/ecc_cert.pem")
+        certificate_path = os.path.join(parent_dir, "DATA_OWNER_ABE/localhost.crt")
         context.load_verify_locations(certificate_path)
         context.check_hostname = False
         print("Connected to the server")

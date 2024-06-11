@@ -23,8 +23,8 @@ class ABE_MainWindowApp(QtWidgets.QMainWindow):
         self.ui.getCipPath.clicked.connect(lambda: self.db_handler.select_save_path(self, self.ui.cipTxb))
         self.ui.getRecPath.clicked.connect(lambda: self.db_handler.select_save_path(self, self.ui.recoverTxb))
 
-        self.ui.getPubBtn.clicked.connect(lambda: self.db_handler.fetch_public_key(self.ui, self.ui.pubTxb, "public_key.bin"))
-        self.ui.getPriBtn.clicked.connect(lambda: self.db_handler.fetch_private_key(self.ui, self.username, self.ui.priTxb, "private_key.bin"))
+        self.ui.getPubBtn.clicked.connect(lambda: self.db_handler.fetch_public_key(self.ui, self.ui.pubTxb, "public_key.bin", "127.0.0.1", 10023))
+        self.ui.getPriBtn.clicked.connect(lambda: self.db_handler.fetch_private_key(self.ui, self.username, self.ui.priTxb, "private_key.bin", "127.0.0.1", 10023))
         self.ui.getCipBtn.clicked.connect(self.handle_get_ciphertext)
         
         self.ui.decryptBtn.clicked.connect(lambda: self.db_handler.decrypt_data(self))

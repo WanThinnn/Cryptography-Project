@@ -40,7 +40,7 @@ def setup(cpabe, path):
 def gen_secret_key(cpabe, public_key_file, master_key_file, attributes, private_key_file):
     public_key = bytesToObject(load_from_file(public_key_file), cpabe.groupObj)
     master_key = bytesToObject(load_from_file(master_key_file), cpabe.groupObj)
-    
+
     user_attributes = attributes.split(',')
     private_key = cpabe.ac17.keygen(public_key, master_key, user_attributes)
     
