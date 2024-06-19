@@ -1,33 +1,44 @@
-#policy_definitions.py
-master_policy_json = {
+doctor_policy_json = {
     "uid": "1",
-    "description": "Director can view all documents of their department.",
+    "description": "Doctor can view and upload all documents of their hospital.",
     "effect": "allow",
     "rules": {
         "subject": {
             "$.role": {
                 "condition": "Equals",
-                "value": "master"
+                "value": "doctor"
             },
             "$.department": {
-                "condition": "Exists",
+                "condition": "Equals",
+                "value": "cardiology"
             },
             "$.position": {
                 "condition": "Equals",
-                "value": "director"
+                "value": "doctor"
             },
         },
             
         "resource": {
             "$.type": {
-                "condition": "Exists",
-            }
+                "condition": "NotEquals",
+                "value": "cardiovascular_patients"
+            },
+            "$.department": {
+                "condition": "Equals",
+                "value": "cardiology"
+            },
         },
         "action": {
-            "$.method": {
+            "$.method": [
+            {
                 "condition": "Equals",
                 "value": "view"
+            },
+            {
+                "condition": "Equals",
+                "value": "upload"
             }
+            ]
         },
         "context": {}
     },
@@ -35,39 +46,39 @@ master_policy_json = {
     "priority": 1
 }
 
-
-admin_finance_policy_json = {
+nurse_policy_json = {
     "uid": "2",
-    "description": "Manager can view all documents of finance department.",
+    "description": "Nurse can view all documents of their hospital.",
     "effect": "allow",
     "rules": {
         "subject": {
             "$.role": {
                 "condition": "Equals",
-                "value": "admin"
+                "value": "nurse"
             },
             "$.department": {
                 "condition": "Equals",
-                "value": "finance"
+                "value": "cardiology"
             },
             "$.position": {
                 "condition": "Equals",
-                "value": "manager"
+                "value": "nurse"
             },
         },
             
         "resource": {
             "$.type": {
                 "condition": "NotEquals",
-                "value": "partners"
+                "value": "cardiovascular_patients"
             },
             "$.department": {
                 "condition": "Equals",
-                "value": "finance"
+                "value": "cardiology"
             },
         },
         "action": {
-            "$.method": {
+            "$.method": 
+            {
                 "condition": "Equals",
                 "value": "view"
             }
@@ -78,391 +89,3 @@ admin_finance_policy_json = {
     "priority": 2
 }
 
-
-admin_HR_policy_json = {
-    "uid": "3",
-    "description": "Manager can view all documents of HR department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "admin"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "HR"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "manager"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "NotEquals",
-                "value": "partners"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "HR"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 2
-}
-
-
-admin_marketing_policy_json = {
-    "uid": "4",
-    "description": "Manager can view all documents of marketing department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "admin"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "marketing"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "manager"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "NotEquals",
-                "value": "partners"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "marketing"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 2
-}
-
-
-user_finance_policy_json = {
-    "uid": "5",
-    "description": "Staff can access basic documents and weekly meeting reports of finance department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "finance"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "staff"
-            },
-        },
-            
-        "resource": {
-                "$.type": {
-                    "condition": "Equals",
-                    "value": "products"
-                },
-                "$.department": {
-                    "condition": "Equals",
-                    "value": "finance"
-                },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 3
-}
-
-
-user_HR_policy_json = {
-    "uid": "6",
-    "description": "Staff can access basic documents and weekly meeting reports of HR department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "HR"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "staff"
-            },
-        },
-        "resource": {
-                "$.type": {
-                    "condition": "Equals",
-                    "value": "products"
-                },
-                "$.department": {
-                    "condition": "Equals",
-                    "value": "HR"
-                },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 3
-}
-
-
-user_marketing_policy_json = {
-    "uid": "7",
-    "description": "Staff can access basic documents and weekly meeting reports of marketing department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "marketing"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "staff"
-            },
-        },
-            
-        "resource": {
-                "$.type": {
-                    "condition": "Equals",
-                    "value": "products"
-                },
-                "$.department": {
-                    "condition": "Equals",
-                    "value": "marketing"
-                },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 3
-}
-
-
-intern_finance_policy_json = {
-    "uid": "8",
-    "description": "Interns can access basic documents of their department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "finance"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "intern"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "Equals",
-                "value": "students"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "finance"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 4
-}
-
-
-intern_HR_policy_json = {
-    "uid": "9",
-    "description": "Interns can access basic documents of their department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "HR"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "intern"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "Equals",
-                "value": "students"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "HR"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 4
-}
-
-
-intern_marketing_policy_json = {
-    "uid": "10",
-    "description": "Interns can access basic documents of their department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "user"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "marketing"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "intern"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "Equals",
-                "value": "students"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "marketing"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "view"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 4
-}
-
-
-
-
-
-dataowner_policy_json = {
-    "uid": "11",
-    "description": "Interns can access basic documents of their department.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "master"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "IT"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "manager"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "Equals",
-                "value": "all"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "IT"
-            },
-        },
-        "action": {
-            "$.method": {
-                "condition": "Equals",
-                "value": "upload"
-            }
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 4
-}
