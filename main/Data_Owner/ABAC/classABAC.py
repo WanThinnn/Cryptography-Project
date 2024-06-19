@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from py_abac.storage.mongo import MongoStorage
 import mysql.connector
 import os, sys
-from config import connect_string, mysql_config
+from ABAC.config import connect_string, mysql_config
 
 
 # Lấy đường dẫn hiện tại của tệp đang chạy

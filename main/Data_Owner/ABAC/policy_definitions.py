@@ -1,16 +1,16 @@
-doctor_policy_json = {
+#policy_definitions.py
+master_doctor_policy_json = {
     "uid": "1",
-    "description": "Doctor can view and upload all documents of their hospital.",
+    "description": "Head of Cardiology department can view all documents of their department.",
     "effect": "allow",
     "rules": {
         "subject": {
             "$.role": {
                 "condition": "Equals",
-                "value": "doctor"
+                "value": "head-of-cardiology"
             },
             "$.department": {
-                "condition": "Equals",
-                "value": "cardiology"
+                "condition": "Exists",
             },
             "$.position": {
                 "condition": "Equals",
@@ -20,25 +20,14 @@ doctor_policy_json = {
             
         "resource": {
             "$.type": {
-                "condition": "NotEquals",
-                "value": "cardiovascular_patients"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "cardiology"
-            },
+                "condition": "Exists",
+            }
         },
         "action": {
-            "$.method": [
-            {
-                "condition": "Equals",
-                "value": "view"
-            },
-            {
+            "$.method": {
                 "condition": "Equals",
                 "value": "upload"
             }
-            ]
         },
         "context": {}
     },
@@ -46,57 +35,14 @@ doctor_policy_json = {
     "priority": 1
 }
 
-master_doctor_policy_json = {
-    "uid": "3",
-    "description": "Master Doctor can view and upload all documents of their hospital.",
-    "effect": "allow",
-    "rules": {
-        "subject": {
-            "$.role": {
-                "condition": "Equals",
-                "value": "Head of Cardiology"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "cardiology"
-            },
-            "$.position": {
-                "condition": "Equals",
-                "value": "doctor"
-            },
-        },
-            
-        "resource": {
-            "$.type": {
-                "condition": "Exists"
-                
-            },
-            "$.department": {
-                "condition": "Exists"
-               
-            },
-        },
-        "action": {
-            "$.method": [
-            {
-                "condition": "Equals",
-                "value": "view"
-            },
-            {
-                "condition": "Equals",
-                "value": "upload"
-            }
-            ]
-        },
-        "context": {}
-    },
-    "targets": {},
-    "priority": 3
-}
+
+
+
+
 
 nurse_policy_json = {
     "uid": "2",
-    "description": "Nurse can view all documents of their hospital.",
+    "description": "nurse can access basic documents and weekly meeting reports of their department.",
     "effect": "allow",
     "rules": {
         "subject": {
@@ -115,18 +61,17 @@ nurse_policy_json = {
         },
             
         "resource": {
-            "$.type": {
-                "condition": "NotEquals",
-                "value": "cardiovascular_patients"
-            },
-            "$.department": {
-                "condition": "Equals",
-                "value": "cardiology"
-            },
+                "$.type": {
+                    "condition": "Equals",
+                    "value":  "cardiovascular_patients"
+                },
+                "$.department": {
+                    "condition": "Equals",
+                    "value": "cardiology"
+                }
         },
         "action": {
-            "$.method": 
-            {
+            "$.method": {
                 "condition": "Equals",
                 "value": "view"
             }
@@ -137,3 +82,46 @@ nurse_policy_json = {
     "priority": 2
 }
 
+
+
+nurse_policy_json_2 = {
+    "uid": "3",
+    "description": "nurse can access basic documents and weekly meeting reports of their department.",
+    "effect": "allow",
+    "rules": {
+        "subject": {
+            "$.role": {
+                "condition": "Equals",
+                "value": "nurse"
+            },
+            "$.department": {
+                "condition": "Equals",
+                "value": "cardiology"
+            },
+            "$.position": {
+                "condition": "Equals",
+                "value": "nurse"
+            },
+        },
+            
+        "resource": {
+                "$.type": {
+                    "condition": "Equals",
+                    "value":  "keys_cardiovascular_patients"
+                },
+                "$.department": {
+                    "condition": "Equals",
+                    "value": "cardiology"
+                }
+        },
+        "action": {
+            "$.method": {
+                "condition": "Equals",
+                "value": "view"
+            }
+        },
+        "context": {}
+    },
+    "targets": {},
+    "priority": 3
+}
