@@ -47,7 +47,7 @@ Currently, the project has only developed the ability to query encrypted data th
 
 
 ## Demo
-![Alt text](https://github.com/WanThinnn/Cryptography-Project/assets/89849825/4f0bc234-0b52-4c2b-b94a-e59daf5453a5)
+[![Watch the video]](https://github.com/WanThinnn/Cryptography-Project/assets/89849825/4f0bc234-0b52-4c2b-b94a-e59daf5453a5)
 
 
 ## Dependencies
