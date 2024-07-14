@@ -19,7 +19,7 @@ Data users who want to query must go through 4 layers:
 + **Bcrypt**: used to authenticate passwords
 + **ABAC**: used to authenticate that user's attributes
 + **CP-ABE**: receive public key and secret key based on that user's attributes. Use these two keys to decrypt the encrypted 256-bit AES key. (Depending on the user's attributes and the encryption policy provided previously, CP-ABE will decrypt that key and the user will receive the AES key according to his attributes)
-+ **AES-GCM**: after passing the above layers, users can decode the data and download it to view.
++ **AES-GCM**: after passing the above layers, users can decrypt the data and download it to view.
 
 To be more intuitive, we use the **PyQT6** library to create a simple interface.
 
