@@ -51,7 +51,7 @@ Currently, the project has only developed the ability to query encrypted data th
 
 
 ## Dependencies
-* Operating System: macOS, Linux. (Currently, we cannot develop this project on windows operating system)
+* Operating Systems: macOS, Linux. (Currently, this project cannot be developed on Windows using Python. However, there is a similar project available in [C/C++ for Windows 11](https://github.com/WanThinnn/CPABE-AC17-Scheme).)
 * Programing Language: Python3 (version 3.10.11).
 * Libraries: 
     * [openSSL](http://www.openssl.org/)
