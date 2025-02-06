@@ -40,9 +40,8 @@ Currently, the project has only developed the ability to query encrypted data th
 * Generate github contributors Image here https://contrib.rocks/preview?repo=angular%2Fangular-ja
 -->
 
-<a href="https://github.com/WanThinnn/Cryptography-Project/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=WanThinnn/Cryptography-Project" />
-</a>
+1. Lai Quan Thien
+2. Le Minh Quan
 
 
 
